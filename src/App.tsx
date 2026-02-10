@@ -6,7 +6,7 @@ import UserReturnServices from './Services/UserService'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [details, setDetails] = useState<any>();
+  // const [details, setDetails] = useState<any>();
   useEffect(() => {
     UserReturnServices.getUserDetails().then((res) => {
       console.log(res);

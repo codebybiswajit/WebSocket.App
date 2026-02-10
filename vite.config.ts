@@ -32,7 +32,10 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-
+    preview: {
+      host: true,
+      allowedHosts: ["websocket-app-codebybiswajit.onrender.com", "localhost:5173",]
+    },
     // base: mode === 'production' ? '/app/' : '/',
   };
 });

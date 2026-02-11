@@ -1,0 +1,31 @@
+const ThemeConfig = {
+    light: {
+        bgPrimary: '#f8f9fc',
+        bgSecondary: '#ffffff',
+        bgGradientStart: '#667eea',
+        bgGradientEnd: '#764ba2',
+        textPrimary: '#1a202c',
+        textSecondary: '#4a5568',
+        textTertiary: '#718096',
+        glassBg: 'rgba(255, 255, 255, 0.15)',
+        glassBorder: 'rgba(255, 255, 255, 0.25)',
+        glassShadow: 'rgba(31, 38, 135, 0.15)',
+        accentPrimary: '#667eea',
+        accentHover: '#5568d3',
+    },
+    dark: {
+        bgPrimary: '#0f1419',
+        bgSecondary: '#1a1f29',
+        bgGradientStart: '#4c1d95',
+        bgGradientEnd: '#1e1b4b',
+        textPrimary: '#f7fafc',
+        textSecondary: '#cbd5e0',
+        textTertiary: '#a0aec0',
+        glassBg: 'rgba(26, 31, 41, 0.4)',
+        glassBorder: 'rgba(255, 255, 255, 0.1)',
+        glassShadow: 'rgba(0, 0, 0, 0.3)',
+        accentPrimary: '#8b5cf6',
+        accentHover: '#7c3aed',
+    },
+};
+export default ThemeConfig;

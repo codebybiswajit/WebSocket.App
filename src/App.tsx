@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useEffect } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
-import UserReturnServices from './Services/UserService'
+// import UserReturnServices from './Services/UserService'
+import { HomeViewApp } from './Component/Home/HomeView'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   // const [details, setDetails] = useState<any>();
-  useEffect(() => {
-    UserReturnServices.getUserDetails().then((res) => {
-      console.log(res);
-    }).catch((err) => { console.log(err); })
-  })
+  // useEffect(() => {
+  //   UserReturnServices.getUserDetails().then((res) => {
+  //     console.log(res);
+  //   }).catch((err) => { console.log(err); })
+  // })
   return (
     <>
-      <div>
+      <HomeViewApp />
+      {/* <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -33,7 +35,7 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+      </p> */}
     </>
   )
 }

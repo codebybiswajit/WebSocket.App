@@ -175,9 +175,8 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         fontFamily: "'Syne', -apple-system, sans-serif",
         fontSize: '1.8rem',
         fontWeight: 800,
-        background: `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})`,
+        color: colors.textPrimary,
         WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
         letterSpacing: '-0.5px',
     };
@@ -329,7 +328,7 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
         transition: 'all 0.2s',
         marginBottom: '0.5rem',
         fontWeight: 500,
-        background: active ? `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})` : 'transparent',
+        // background: active ? `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})` : 'transparent',
     });
 
     const iconStyle: CSSProperties = {
@@ -384,9 +383,8 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
         fontWeight: 800,
         lineHeight: 1.1,
         marginBottom: '1.5rem',
-        background: `linear-gradient(135deg, ${colors.textPrimary}, ${colors.accentPrimary})`,
+        color: colors.textPrimary,
         WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
         letterSpacing: '-2px',
     };

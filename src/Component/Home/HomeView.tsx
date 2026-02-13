@@ -36,7 +36,7 @@ export const HomeViewApp = () => {
         margin: 0,
         padding: 0,
         fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-        backgroundColor: colors.bgPrimary,
+        // backgroundColor: colors.bgPrimary,
         color: colors.textPrimary,
         transition: 'background-color 0.5s ease, color 0.3s ease',
         minHeight: '100vh',
@@ -265,7 +265,7 @@ const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: typeof ThemeCon
         transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         zIndex: 999,
         overflowY: 'auto',
-        background: colors.glassBg,
+        background: colors.bgPrimary,
         backdropFilter: 'blur(20px) saturate(180%)',
         WebkitBackdropFilter: 'blur(20px) saturate(180%)',
         border: `1px solid ${colors.glassBorder}`,
@@ -433,21 +433,21 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
     ];
 
     const features: Feature[] = [
-        {
-            icon: '🔒',
-            title: 'End-to-End Encryption',
-            description: 'Your conversations are private and secure with military-grade encryption.'
-        },
+        // {
+        //     icon: '🔒',
+        //     title: 'End-to-End Encryption',
+        //     description: 'Your conversations are private and secure with military-grade encryption.'
+        // },
         {
             icon: '⚡',
             title: 'Lightning Fast',
             description: 'Messages delivered instantly with our optimized infrastructure.'
         },
-        {
-            icon: '🌍',
-            title: 'Global Reach',
-            description: 'Connect with anyone, anywhere in the world, seamlessly.'
-        }
+        // {
+        //     icon: '🌍',
+        //     title: 'Global Reach',
+        //     description: 'Connect with anyone, anywhere in the world, seamlessly.'
+        // }
     ];
 
     return (

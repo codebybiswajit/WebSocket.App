@@ -14,7 +14,7 @@ export const HomeViewApp = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    
     const colors = ThemeConfig[theme];
 
     useEffect(() => {
@@ -62,7 +62,10 @@ export const HomeViewApp = () => {
 
             {showLoginModal && (
                 <LoginModal
-                    onClose={() => setShowLoginModal(false)}
+                    onClose={() =>
+                        setShowLoginModal(false)
+
+                    }
                     onSwitchToSignup={() => {
                         setShowLoginModal(false);
                         setShowSignupModal(true);
@@ -236,9 +239,9 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         <nav style={navbarStyle}>
             <div style={navbarLeftStyle}>
                 <button style={menuToggleStyle} onClick={toggleSidebar} aria-label="Toggle menu">
-                    <span>{sidebarCollapsed ? '☰' : '✕'}</span>
+                    <span>{'☰'}</span>
                 </button>
-                <div style={logoStyle}>Nexus</div>
+                <div style={logoStyle}>My Chat by BM</div>
             </div>
             <div style={navbarRightStyle}>
                 <button style={themeToggleStyle} onClick={toggleTheme} aria-label="Toggle theme">

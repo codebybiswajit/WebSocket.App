@@ -99,16 +99,24 @@ const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) =>
         formikHelpers: FormikHelpers<{ userName: string; password: string }>
     ) => {
         try {
-            setLoading(true);               // show global loading (before closing)
-            await UserService.login(values.userName.trim(), values.password);
-            onClose();                      // close modal on success
+            setLoading(true);
+            await UserService.login(values.userName.trim(), values.password).then((res: any) => {
+                if (res.status === 200 || res?.result?.status == true) {
+                    localStorage.setItem("token", res?.result?.token || res?.token);
+                    localStorage.setItem("userId", JSON.stringify(res?.result?.userId || res?.user));
+                    sessionStorage.setItem("token", res?.result?.token || res?.token);
+                    sessionStorage.setItem("userId", JSON.stringify(res?.result?.userId || res?.user));
+                    alert("Login successful! Welcome back.");
+                }
+            }).catch((err) => {
+                alert(err?.message || "Login failed! Please check your credentials.");
+            });
+            onClose();
         } catch (err) {
-            // Show a friendly error; replace with toast if you use one
             alert("Login failed! Please check your credentials.");
-            // Optionally set Formik errors:
             formikHelpers.setFieldError("password", "Invalid credentials");
         } finally {
-            setLoading(false);              // stop loading (or keep true if navigation happens elsewhere)
+            setLoading(false);
         }
     };
 

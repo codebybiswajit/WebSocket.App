@@ -239,7 +239,7 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         <nav style={navbarStyle}>
             <div style={navbarLeftStyle}>
                 <button style={menuToggleStyle} onClick={toggleSidebar} aria-label="Toggle menu">
-                    <span>{'☰'}</span>
+                    <span>{sidebarCollapsed?'☰':'☰'}</span>
                 </button>
                 <div style={logoStyle}>My Chat by BM</div>
             </div>

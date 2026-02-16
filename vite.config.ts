@@ -22,6 +22,11 @@ export default defineConfig(({ mode }) => {
       __API_URL__: JSON.stringify(env.VITE_API_URL || backendOrigin),
     },
 
+  "compilerOptions": {
+    "types": ["vite/client"]
+  },
+
+
     server: {
       port: serverPort,
       proxy: {

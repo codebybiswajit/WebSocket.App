@@ -141,7 +141,7 @@ const ChatStyles: ChatStylesType = {
         flex: 1,
         overflowY: 'auto',
         padding: '20px',
-        background: '#f5f5f5',
+        // background: '#f5f5f5',
     },
 
     message: {
@@ -233,7 +233,7 @@ const ChatStyles: ChatStylesType = {
     messageForm: {
         display: 'flex',
         padding: '20px',
-        background: 'white',
+        // background: 'white',
         borderTop: '1px solid #e0e0e0',
     },
 

@@ -107,7 +107,7 @@ const SignupModal = ({
     };
 
     const inputStyle: CSSProperties = {
-        width: "100%",
+        width: "90%",
         padding: "0.875rem 1.25rem",
         borderRadius: "12px",
         border: `2px solid ${colors.glassBorder}`,

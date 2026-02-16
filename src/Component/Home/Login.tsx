@@ -61,7 +61,7 @@ const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) =>
     const formGroupStyle: CSSProperties = { marginBottom: "1.5rem" };
     const labelStyle: CSSProperties = { display: "block", marginBottom: "0.5rem", fontWeight: 600, color: colors.textPrimary, fontSize: "0.9rem" };
     const inputStyle: CSSProperties = {
-        width: "100%",
+        width: "90%",
         padding: "0.875rem 1.25rem",
         borderRadius: "12px",
         border: `2px solid ${colors.glassBorder}`,
@@ -101,12 +101,14 @@ const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) =>
         try {
             setLoading(true);
             await UserService.login(values.userName.trim(), values.password).then((res: any) => {
+                console.log(res)
                 if (res.status === 200 || res?.result?.status == true) {
-                    localStorage.setItem("token", res?.result?.token || res?.token);
-                    localStorage.setItem("userId", JSON.stringify(res?.result?.userId || res?.user));
-                    sessionStorage.setItem("token", res?.result?.token || res?.token);
-                    sessionStorage.setItem("userId", JSON.stringify(res?.result?.userId || res?.user));
-                    alert("Login successful! Welcome back.");
+
+                    localStorage.setItem("token", res?.data?.res?.token ?? null);
+                    localStorage.setItem("userId", JSON.stringify(res?.data?.userId ?? null));
+                    sessionStorage.setItem("token", res?.data?.res?.token ?? null);
+                    sessionStorage.setItem("userId", JSON.stringify(res?.data?.userId ?? null));
+                    // alert("Login successful! Welcome back.");
                 }
             }).catch((err) => {
                 alert(err?.message || "Login failed! Please check your credentials.");

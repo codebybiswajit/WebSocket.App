@@ -10,7 +10,7 @@ const HUB_URL = import.meta.env.VITE_APP_HUB_URL || 'http://localhost:5000/chatH
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
+    const [users] = useState<User[]>([]);
     const [onlineCount, setOnlineCount] = useState<number>(0);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isTyping, setIsTyping] = useState<boolean>(false);

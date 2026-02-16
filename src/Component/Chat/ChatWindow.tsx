@@ -1,15 +1,15 @@
 // components/Chat/ChatWindow.tsx
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useChat } from '../../Context/ChatContext';
-import { ConnectionStatus } from '../../types/chat';
+import { ConnectionStatus } from '../../Types/Chat';
 import styles from './ChatStyle';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 import UsernameModal from './UsernameModel';
 
-const ChatWindow: React.FC = () => {
+const ChatWindow = () => {
   const { messages, onlineCount, connectionStatus, currentUser, isTyping, typingUser, sendMessage, setUsername, notifyTyping, notifyStopTyping } = useChat();
 
   const [showUsernameModal, setShowUsernameModal] = useState(!currentUser);

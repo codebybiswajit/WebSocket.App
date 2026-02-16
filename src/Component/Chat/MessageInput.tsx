@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './ChatStyle';
 
 interface MessageInputProps {
@@ -9,12 +9,7 @@ interface MessageInputProps {
     disabled?: boolean;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({
-    onSendMessage,
-    onTyping,
-    onStopTyping,
-    disabled = false,
-}) => {
+const MessageInput = ({ onSendMessage, onTyping, onStopTyping, disabled }: MessageInputProps) => {
     const [message, setMessage] = useState('');
     const typingTimeoutRef = useRef(null);
 

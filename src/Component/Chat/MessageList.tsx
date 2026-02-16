@@ -1,14 +1,14 @@
 // components/Chat/MessageList.tsx
 
-import React, { useEffect, useRef } from 'react';
-import type { ChatMessage } from '../../types/chat';
-import styles from './ChatStyle'
+import { useEffect, useRef } from 'react';
+import type { ChatMessage } from '../../Types/Chat';
+import styles from './ChatStyle';
 interface MessageListProps {
     messages: ChatMessage[];
     currentConnectionId?: string;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, currentConnectionId }) => {
+const MessageList = ({ messages, currentConnectionId }: MessageListProps) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {

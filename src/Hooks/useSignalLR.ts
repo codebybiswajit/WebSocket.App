@@ -1,8 +1,8 @@
 // hooks/useSignalR.ts
 
-import { useEffect, useRef, useState, useCallback } from 'react';
 import * as signalR from '@microsoft/signalr';
-import { ConnectionStatus } from '../types/chat';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ConnectionStatus } from '../Types/Chat';
 
 interface UseSignalROptions {
     hubUrl: string;

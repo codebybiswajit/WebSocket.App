@@ -1,13 +1,13 @@
 // components/Chat/UsernameModal.tsx
 
 import React, { useState } from 'react';
-import styles from './ChatStyle'
+import styles from './ChatStyle';
 
 interface UsernameModalProps {
   onSetUsername: (username: string) => void;
 }
 
-const UsernameModal: React.FC<UsernameModalProps> = ({ onSetUsername }) => {
+const UsernameModal = ({ onSetUsername }: UsernameModalProps) => {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
 

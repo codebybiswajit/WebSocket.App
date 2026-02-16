@@ -1,8 +1,8 @@
 // contexts/ChatContext.tsx
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useSignalR } from '../Hooks/useSignalLR';
-import type { ChatContextType, ChatMessage, User } from '../types/chat';
+import type { ChatContextType, ChatMessage, User } from '../Types/Chat';
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 

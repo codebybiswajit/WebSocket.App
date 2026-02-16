@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import type { SignupModalProps } from "../../Types/CommonTypes";
 import type ThemeConfig from "../../Utils/ThemeConfig";
-import { ErrorMessage, Field, Form, Formik, useFormik, type FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import UserService from "../../Services/UserService";
 // Payload interface

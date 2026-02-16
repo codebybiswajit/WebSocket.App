@@ -141,7 +141,7 @@ const ChatWindow = () => {
                 }}
                 onClick={() => {
                   setSelectedContact(contact.id)
-                  handleSetUsername(contact.name); // Set username to contact name for demo purposes
+                  handleSetUsername(contact.name);
                 }}
               >
                 <div style={styles.contactAvatar}>
@@ -740,7 +740,7 @@ const styles: Record<string, CSSProperties> = {
   inputContainer: {
     backgroundColor: '#202C33',
     borderTop: '1px solid #2A3942',
-    padding: '8px 16px',
+    // padding: '8px 16px',
     flexShrink: 0,
   },
 };

@@ -8,13 +8,12 @@ import SignupModal from './Signup';
 
 
 // Main App Component
-export const HomeViewApp = () => {
+export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn: boolean) => void, loggedIn: boolean }) => {
     const [theme, setTheme] = useState<Theme>('light');
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    
     const colors = ThemeConfig[theme];
 
     useEffect(() => {
@@ -36,59 +35,198 @@ export const HomeViewApp = () => {
         margin: 0,
         padding: 0,
         fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
-        // backgroundColor: colors.bgPrimary,
         color: colors.textPrimary,
         transition: 'background-color 0.5s ease, color 0.3s ease',
         minHeight: '100vh',
     };
 
+    const handleClose = () => {
+        setShowLoginModal(false);
+        setLoggedIn(true);
+    }
+
+    // Global keyframes
+    const globalKeyframes = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(-10%, -10%);
+            }
+            66% {
+                transform: translate(10%, 5%);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5), 0 0 10px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.5);
+            }
+        }
+    `;
+
     return (
-        <div style={appStyles}>
-            <AppBackground colors={colors} />
+        <>
+            <style>{globalKeyframes}</style>
+            <div style={appStyles}>
+                <AppBackground colors={colors} />
 
-            <Navbar
-                theme={theme}
-                toggleTheme={toggleTheme}
-                toggleSidebar={toggleSidebar}
-                sidebarCollapsed={sidebarCollapsed}
-                onLoginClick={() => setShowLoginModal(true)}
-                onSignupClick={() => setShowSignupModal(true)}
-                colors={colors}
-            />
-
-            <Sidebar collapsed={sidebarCollapsed} colors={colors} />
-
-            <MainContent collapsed={sidebarCollapsed} colors={colors} />
-
-            {showLoginModal && (
-                <LoginModal
-                    onClose={() =>
-                        setShowLoginModal(false)
-
-                    }
-                    onSwitchToSignup={() => {
-                        setShowLoginModal(false);
-                        setShowSignupModal(true);
-                    }}
-                    setLoading={setLoading}
+                <Navbar
+                    theme={theme}
+                    toggleTheme={toggleTheme}
+                    toggleSidebar={toggleSidebar}
+                    sidebarCollapsed={sidebarCollapsed}
+                    onLoginClick={() => setShowLoginModal(true)}
+                    onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
                 />
-            )}
 
-            {showSignupModal && (
-                <SignupModal
-                    onClose={() => setShowSignupModal(false)}
-                    onSwitchToLogin={() => {
-                        setShowSignupModal(false);
-                        setShowLoginModal(true);
-                    }}
-                    setLoading={setLoading}
-                    colors={colors}
-                />
-            )}
+                {loggedIn && <Sidebar collapsed={sidebarCollapsed} colors={colors} />}
 
-            {loading && <Spinner colors={colors} />}
-        </div>
+                <MainContent collapsed={sidebarCollapsed} colors={colors} />
+
+                {showLoginModal && (
+                    <LoginModal
+                        onClose={() => handleClose()}
+                        onSwitchToSignup={() => {
+                            setShowLoginModal(false);
+                            setShowSignupModal(true);
+                        }}
+                        setLoading={setLoading}
+                        colors={colors}
+                    />
+                )}
+
+                {showSignupModal && (
+                    <SignupModal
+                        onClose={() => setShowSignupModal(false)}
+                        onSwitchToLogin={() => {
+                            setShowSignupModal(false);
+                            setShowLoginModal(true);
+                        }}
+                        setLoading={setLoading}
+                        colors={colors}
+                    />
+                )}
+
+                {loading && <Spinner colors={colors} />}
+            </div>
+        </>
     );
 }
 
@@ -122,13 +260,6 @@ const AppBackground = ({ colors }: { colors: typeof ThemeConfig.light }) => {
     return (
         <div style={containerStyle}>
             <div style={animatedLayerStyle} />
-            <style>{`
-        @keyframes backgroundShift {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(-10%, -10%); }
-          66% { transform: translate(10%, 5%); }
-        }
-      `}</style>
         </div>
     );
 }
@@ -151,6 +282,7 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         WebkitBackdropFilter: 'blur(20px) saturate(180%)',
         border: `1px solid ${colors.glassBorder}`,
         boxShadow: `0 8px 32px ${colors.glassShadow}`,
+        animation: 'fadeInDown 0.6s ease-out',
     };
 
     const navbarLeftStyle: CSSProperties = {
@@ -171,7 +303,7 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: '10px',
-        transition: 'all 0.3s',
+        transition: 'all 0.3s ease',
     };
 
     const logoStyle: CSSProperties = {
@@ -182,12 +314,14 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         letterSpacing: '-0.5px',
+        animation: 'fadeInLeft 0.8s ease-out',
     };
 
     const navbarRightStyle: CSSProperties = {
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
+        animation: 'fadeInRight 0.8s ease-out',
     };
 
     const themeToggleStyle: CSSProperties = {
@@ -201,7 +335,7 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'all 0.3s',
+        transition: 'all 0.3s ease',
         fontSize: '1.2rem',
     };
 
@@ -216,7 +350,7 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
         fontWeight: 600,
         fontSize: '0.95rem',
         cursor: 'pointer',
-        transition: 'all 0.3s',
+        transition: 'all 0.3s ease',
         fontFamily: "'DM Sans', sans-serif",
     };
 
@@ -238,18 +372,66 @@ const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginCl
     return (
         <nav style={navbarStyle}>
             <div style={navbarLeftStyle}>
-                <button style={menuToggleStyle} onClick={toggleSidebar} aria-label="Toggle menu">
-                    <span>{sidebarCollapsed?'☰':'☰'}</span>
+                <button
+                    style={menuToggleStyle}
+                    onClick={toggleSidebar}
+                    aria-label="Toggle menu"
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)';
+                        e.currentTarget.style.background = colors.glassBg;
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                        e.currentTarget.style.background = 'transparent';
+                    }}
+                >
+                    <span>{sidebarCollapsed ? '☰' : '☰'}</span>
                 </button>
                 <div style={logoStyle}>My Chat by BM</div>
             </div>
             <div style={navbarRightStyle}>
-                <button style={themeToggleStyle} onClick={toggleTheme} aria-label="Toggle theme">
+                <button
+                    style={themeToggleStyle}
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1) rotate(20deg)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                    }}
+                >
                     <span>{theme === 'dark' ? '☀️' : '🌙'}</span>
                 </button>
                 <div style={authButtonsStyle}>
-                    <button style={btnOutlineStyle} onClick={onLoginClick}>Log In</button>
-                    <button style={btnPrimaryStyle} onClick={onSignupClick}>Sign Up</button>
+                    <button
+                        style={btnOutlineStyle}
+                        onClick={onLoginClick}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        Log In
+                    </button>
+                    <button
+                        style={btnPrimaryStyle}
+                        onClick={onSignupClick}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.6)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                        }}
+                    >
+                        Sign Up
+                    </button>
                 </div>
             </div>
         </nav>
@@ -274,6 +456,7 @@ const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: typeof ThemeCon
         border: `1px solid ${colors.glassBorder}`,
         boxShadow: `0 8px 32px ${colors.glassShadow}`,
         transform: collapsed ? 'translateX(-100%)' : 'translateX(0)',
+        animation: !collapsed ? 'slideInFromLeft 0.3s ease-out' : 'none',
     };
 
     const menuItems: SidebarItem[] = [
@@ -318,9 +501,10 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
         color: colors.textTertiary,
         marginBottom: '1rem',
         padding: '0 0.5rem',
+        animation: 'fadeInLeft 0.5s ease-out',
     };
 
-    const itemStyle = (active: boolean): CSSProperties => ({
+    const itemStyle = (active: boolean, index: number): CSSProperties => ({
         display: 'flex',
         alignItems: 'center',
         gap: '0.75rem',
@@ -328,10 +512,10 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
         borderRadius: '12px',
         color: active ? 'white' : colors.textSecondary,
         cursor: 'pointer',
-        transition: 'all 0.2s',
+        transition: 'all 0.3s ease',
         marginBottom: '0.5rem',
         fontWeight: 500,
-        // background: active ? `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})` : 'transparent',
+        animation: `fadeInLeft ${0.3 + index * 0.1}s ease-out`,
     });
 
     const iconStyle: CSSProperties = {
@@ -342,7 +526,18 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
         <div style={sectionStyle}>
             <div style={titleStyle}>{title}</div>
             {items.map((item, index) => (
-                <div key={index} style={itemStyle(item.active || false)}>
+                <div
+                    key={index}
+                    style={itemStyle(item.active || false, index)}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateX(5px)';
+                        e.currentTarget.style.background = colors.glassBg;
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateX(0)';
+                        e.currentTarget.style.background = 'transparent';
+                    }}
+                >
                     <span style={iconStyle}>{item.icon}</span>
                     <span>{item.label}</span>
                 </div>
@@ -352,9 +547,9 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
 }
 
 // Main Content Component
-const MainContent = ({ collapsed, colors }: { collapsed: boolean; colors: typeof ThemeConfig.light }) => {
+const MainContent = ({ colors }: { collapsed: boolean; colors: typeof ThemeConfig.light }) => {
     const mainStyle: CSSProperties = {
-        marginLeft: collapsed ? 0 : '280px',
+        marginLeft: 0,
         marginTop: '70px',
         padding: '3rem',
         minHeight: 'calc(100vh - 70px)',
@@ -390,6 +585,7 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         letterSpacing: '-2px',
+        animation: 'fadeInUp 0.8s ease-out',
     };
 
     const heroSubtitleStyle: CSSProperties = {
@@ -398,6 +594,11 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
         maxWidth: '600px',
         margin: '0 auto 2.5rem',
         lineHeight: 1.6,
+        animation: 'fadeInUp 1s ease-out 0.2s backwards',
+    };
+
+    const buttonContainerStyle: CSSProperties = {
+        animation: 'fadeInUp 1.2s ease-out 0.4s backwards',
     };
 
     const btnPrimaryStyle: CSSProperties = {
@@ -406,7 +607,7 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
         borderRadius: '12px',
         fontWeight: 600,
         cursor: 'pointer',
-        transition: 'all 0.3s',
+        transition: 'all 0.3s ease',
         fontFamily: "'DM Sans', sans-serif",
         background: `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})`,
         color: 'white',
@@ -436,21 +637,11 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
     ];
 
     const features: Feature[] = [
-        // {
-        //     icon: '🔒',
-        //     title: 'End-to-End Encryption',
-        //     description: 'Your conversations are private and secure with military-grade encryption.'
-        // },
         {
             icon: '⚡',
             title: 'Lightning Fast',
             description: 'Messages delivered instantly with our optimized infrastructure.'
-        },
-        // {
-        //     icon: '🌍',
-        //     title: 'Global Reach',
-        //     description: 'Connect with anyone, anywhere in the world, seamlessly.'
-        // }
+        }
     ];
 
     return (
@@ -460,8 +651,20 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
                 <p style={heroSubtitleStyle}>
                     Experience messaging reimagined with crystal-clear communication, seamless collaboration, and privacy at its core.
                 </p>
-                <div>
-                    <button style={btnPrimaryStyle}>Get Started Free</button>
+                <div style={buttonContainerStyle}>
+                    <button
+                        style={btnPrimaryStyle}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+                            e.currentTarget.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.6)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                        }}
+                    >
+                        Get Started Free
+                    </button>
                 </div>
             </section>
 
@@ -483,28 +686,31 @@ const FeaturesGrid = ({ features, colors }: { features: Feature[]; colors: typeo
     return (
         <div style={gridStyle}>
             {features.map((feature, index) => (
-                <FeatureCard key={index} feature={feature} colors={colors} />
+                <FeatureCard key={index} feature={feature} colors={colors} index={index} />
             ))}
         </div>
     );
 }
 
 // Feature Card Component
-const FeatureCard = ({ feature, colors }: { feature: Feature; colors: typeof ThemeConfig.light }) => {
+const FeatureCard = ({ feature, colors, index }: { feature: Feature; colors: typeof ThemeConfig.light; index: number }) => {
     const cardStyle: CSSProperties = {
         padding: '2rem',
         borderRadius: '20px',
-        transition: 'all 0.3s',
+        transition: 'all 0.3s ease',
         background: colors.glassBg,
         backdropFilter: 'blur(20px) saturate(180%)',
         WebkitBackdropFilter: 'blur(20px) saturate(180%)',
         border: `1px solid ${colors.glassBorder}`,
         boxShadow: `0 8px 32px ${colors.glassShadow}`,
+        animation: `fadeInUp 0.8s ease-out ${index * 0.2}s backwards`,
     };
 
     const iconStyle: CSSProperties = {
         fontSize: '2.5rem',
         marginBottom: '1.5rem',
+        display: 'inline-block',
+        animation: 'bounce 2s ease-in-out infinite',
     };
 
     const titleStyle: CSSProperties = {
@@ -520,12 +726,20 @@ const FeatureCard = ({ feature, colors }: { feature: Feature; colors: typeof The
     };
 
     return (
-        <div style={cardStyle}>
+        <div
+            style={cardStyle}
+            onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-10px)';
+                e.currentTarget.style.boxShadow = `0 12px 40px ${colors.glassShadow}`;
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = `0 8px 32px ${colors.glassShadow}`;
+            }}
+        >
             <div style={iconStyle}>{feature.icon}</div>
             <h3 style={titleStyle}>{feature.title}</h3>
             <p style={descriptionStyle}>{feature.description}</p>
         </div>
     );
 }
-
-

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type CSSProperties } from 'react';
+import { useState, useEffect, type CSSProperties } from 'react';
 import { motion, type Variants } from 'framer-motion';
 
 interface MousePosition {

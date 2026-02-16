@@ -1,6 +1,6 @@
 // vite.config.ts
-import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   // Load only VITE_ variables (optional)

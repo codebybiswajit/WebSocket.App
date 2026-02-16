@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
-import MessageBubble from "./MessageBubble";
 import type { Message } from "../../Types/CommonTypes";
 import type ThemeConfig from "../../Utils/ThemeConfig";
+import MessageBubble from "./MessageBubble";
 
 // Chat Preview Component
 const ChatPreview = ({ messages, colors }: { messages: Message[]; colors: typeof ThemeConfig.light }) => {

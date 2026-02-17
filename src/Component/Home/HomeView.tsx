@@ -9,8 +9,7 @@ import SignupModal from './Signup';
 
 
 // Main App Component
-export const HomeViewApp = ({ setLoggedIn }: { setLoggedIn: (loggedIn: boolean) => void }) => {
-    const [theme, setTheme] = useState<Theme>(Theme.Light);
+export const HomeViewApp = ({ setLoggedIn,setTheme ,theme}: { setLoggedIn: (loggedIn: boolean) => void, setTheme: (theme: Theme) => void ,theme : Theme}) => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [loading, setLoading] = useState(false);

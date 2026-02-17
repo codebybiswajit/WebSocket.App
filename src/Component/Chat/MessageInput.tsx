@@ -1,3 +1,4 @@
+// components/Chat/MessageInput.tsx
 
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './ChatStyle';
@@ -11,46 +12,36 @@ interface MessageInputProps {
 
 const MessageInput = ({ onSendMessage, onTyping, onStopTyping, disabled }: MessageInputProps) => {
     const [message, setMessage] = useState('');
-    const typingTimeoutRef = useRef(null);
+    const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);
-
-        // Notify typing
         onTyping();
 
-        // Clear existing timeout
-        if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-        }
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
 
-        // Set timeout to stop typing
-        // typingTimeoutRef.current = setTimeout(() => {
-        //     onStopTyping();
-        // }, 1000);
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (message.trim() && !disabled) {
-            onSendMessage(message);
-            setMessage('');
+        typingTimeoutRef.current = setTimeout(() => {
             onStopTyping();
-
-            // Clear typing timeout
-            if (typingTimeoutRef.current) {
-                clearTimeout(typingTimeoutRef.current);
-            }
-        }
+        }, 1500);
     };
 
-    // Cleanup timeout on unmount
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmed = message.trim();
+        if (!trimmed || disabled) return;
+
+        // FIX: call onSendMessage ONCE — the old code called it a second time
+        // inside console.log(), sending the message twice and logging a Promise
+        await onSendMessage(trimmed);
+
+        setMessage('');
+        onStopTyping();
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+
     useEffect(() => {
         return () => {
-            if (typingTimeoutRef.current) {
-                clearTimeout(typingTimeoutRef.current);
-            }
+            if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
         };
     }, []);
 
@@ -67,7 +58,10 @@ const MessageInput = ({ onSendMessage, onTyping, onStopTyping, disabled }: Messa
             />
             <button
                 type="submit"
-                style={styles.sendButton}
+                style={{
+                    ...styles.sendButton,
+                    ...(disabled || !message.trim() ? styles.sendButtonDisabled : {}),
+                }}
                 disabled={disabled || !message.trim()}
             >
                 Send

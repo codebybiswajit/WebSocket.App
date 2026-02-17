@@ -35,14 +35,14 @@ export interface ThemeMeta {
 }
 
 export interface NavbarProps {
-    theme: Theme;
-    toggleTheme: () => void;
-    toggleSidebar: () => void;
-    sidebarCollapsed: boolean;
-    onLoginClick: () => void;
-    onSignupClick: () => void;
-    colors: ThemeColors;
-    setTheme: (theme: Theme) => void;
+    theme?: Theme;
+    toggleTheme?: () => void;
+    toggleSidebar?: () => void;
+    sidebarCollapsed?: boolean;
+    onLoginClick?: () => void;
+    onSignupClick?: () => void;
+    colors?: ThemeColors;
+    setTheme?: (theme: Theme) => void;
 }
 
 export interface SidebarProps {
@@ -56,6 +56,7 @@ export interface ModalProps {
 
 export interface LoginModalProps extends ModalProps {
     onSwitchToSignup: () => void;
+    onSuccessfulLogin: () => void;
 }
 
 export interface SignupModalProps extends ModalProps {
@@ -104,3 +105,7 @@ export const THEME_GRADIENTS: Record<string, [string, string]> = {
     forestDepths: ['#14532d', '#052e16'],
     neonAbyss: ['#164e63', '#1e1b4b'],
 };
+export interface IdName {
+    id: string;
+    name: string;
+}

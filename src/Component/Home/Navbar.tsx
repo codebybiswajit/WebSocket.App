@@ -4,8 +4,6 @@ import { Theme, THEME_GRADIENTS, THEME_META, type NavbarProps } from "../../Type
 const Navbar = ({
     theme,
     toggleTheme,
-    toggleSidebar,
-    sidebarCollapsed,
     onLoginClick,
     onSignupClick,
     colors,
@@ -192,7 +190,7 @@ const Navbar = ({
 
                 {/* ── Left ── */}
                 <div style={navbarLeftStyle}>
-                    <button
+                    {/* <button
                         style={menuToggleStyle}
                         onClick={toggleSidebar}
                         aria-label="Toggle menu"
@@ -206,7 +204,7 @@ const Navbar = ({
                         }}
                     >
                         <span>{sidebarCollapsed ? '☰' : '☰'}</span>
-                    </button>
+                    </button> */}
                     <div style={logoStyle}>My Chat by BM</div>
                 </div>
 

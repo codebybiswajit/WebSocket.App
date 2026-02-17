@@ -6,11 +6,16 @@ export interface ChatMessage {
     message: string;
     timestamp: Date;
     connectionId?: string;
+    userId?: string;
+    formUserId?: string; // FIX: added formUserId to match server payload
+    toUserId?: string;
+    inGroupId?: string;
 }
 
 export interface User {
     connectionId: string;
     username: string;
+    userId: string;
 }
 
 export enum ConnectionStatus {

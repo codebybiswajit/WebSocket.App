@@ -1,9 +1,9 @@
+import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
 import { type CSSProperties, type MouseEvent } from "react";
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
+import UserService from "../../Services/UserService";
 import type { LoginModalProps } from "../../Types/CommonTypes";
 import type ThemeConfig from "../../Utils/ThemeConfig";
-import UserService from "../../Services/UserService";
 
 type Props = LoginModalProps & { colors: typeof ThemeConfig.light };
 
@@ -12,7 +12,7 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().required("Password is required"),
 });
 
-const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) => {
+const LoginModal = ({ onClose, onSwitchToSignup, onSuccessfulLogin, setLoading, colors }: Props) => {
     const overlayStyle: CSSProperties = {
         position: "fixed",
         inset: 0,
@@ -101,7 +101,6 @@ const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) =>
         try {
             setLoading(true);
             await UserService.login(values.userName.trim(), values.password).then((res: any) => {
-                console.log(res)
                 if (res.status === 200 || res?.result?.status == true) {
 
                     localStorage.setItem("token", res?.data?.res?.token ?? null);
@@ -109,11 +108,14 @@ const LoginModal = ({ onClose, onSwitchToSignup, setLoading, colors }: Props) =>
                     sessionStorage.setItem("token", res?.data?.res?.token ?? null);
                     sessionStorage.setItem("userId", JSON.stringify(res?.data?.userId ?? null));
                     // alert("Login successful! Welcome back.");
+                    onSuccessfulLogin();
                 }
             }).catch((err) => {
                 alert(err?.message || "Login failed! Please check your credentials.");
+                onClose();
+            }).finally(() => {
+                setLoading(false);
             });
-            onClose();
         } catch (err) {
             alert("Login failed! Please check your credentials.");
             formikHelpers.setFieldError("password", "Invalid credentials");

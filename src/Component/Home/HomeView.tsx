@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from 'react';
-import { Theme, type Feature, type Message, type SidebarItem, type SidebarProps, type ThemeColors } from '../../Types/CommonTypes';
+import { Theme, type Feature, type Message, type ThemeColors } from '../../Types/CommonTypes';
 import Spinner from '../../Utils/Spinner';
 import ThemeConfig from '../../Utils/ThemeConfig';
 import ChatPreview from '../Chat/ChatPreview';
@@ -9,9 +9,8 @@ import SignupModal from './Signup';
 
 
 // Main App Component
-export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn: boolean) => void, loggedIn: boolean }) => {
+export const HomeViewApp = ({ setLoggedIn }: { setLoggedIn: (loggedIn: boolean) => void }) => {
     const [theme, setTheme] = useState<Theme>(Theme.Light);
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -28,10 +27,6 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
         localStorage.setItem('theme', newTheme);
     };
 
-    const toggleSidebar = () => {
-        setSidebarCollapsed(!sidebarCollapsed);
-    };
-
     const appStyles: CSSProperties = {
         margin: 0,
         padding: 0,
@@ -43,7 +38,6 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
 
     const handleClose = () => {
         setShowLoginModal(false);
-        setLoggedIn(true);
     }
 
     // Global keyframes
@@ -189,8 +183,6 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
 
                 <Navbar
                     toggleTheme={toggleTheme}
-                    toggleSidebar={toggleSidebar}
-                    sidebarCollapsed={sidebarCollapsed}
                     onLoginClick={() => setShowLoginModal(true)}
                     onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
@@ -198,9 +190,8 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
                     theme={theme}
                 />
 
-                {loggedIn && <Sidebar collapsed={sidebarCollapsed} colors={colors} />}
 
-                <MainContent collapsed={sidebarCollapsed} colors={colors} />
+                <MainContent colors={colors} />
 
                 {showLoginModal && (
                     <LoginModal
@@ -208,6 +199,10 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
                         onSwitchToSignup={() => {
                             setShowLoginModal(false);
                             setShowSignupModal(true);
+                        }}
+                        onSuccessfulLogin={() => {
+                            setLoggedIn(true);
+                            setShowLoginModal(false);
                         }}
                         setLoading={setLoading}
                         colors={colors}
@@ -269,116 +264,9 @@ const AppBackground = ({ colors }: { colors: ThemeColors }) => {
 
 
 
-// Sidebar Component
-const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: ThemeColors }) => {
-    const sidebarStyle: CSSProperties = {
-        position: 'fixed',
-        top: '70px',
-        left: 0,
-        width: '280px',
-        height: 'calc(100vh - 70px)',
-        padding: '2rem 1.5rem',
-        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        zIndex: 999,
-        overflowY: 'auto',
-        background: colors.bgPrimary,
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-        border: `1px solid ${colors.glassBorder}`,
-        boxShadow: `0 8px 32px ${colors.glassShadow}`,
-        transform: collapsed ? 'translateX(-100%)' : 'translateX(0)',
-        animation: !collapsed ? 'slideInFromLeft 0.3s ease-out' : 'none',
-    };
-
-    const menuItems: SidebarItem[] = [
-        { icon: '🏠', label: 'Home', active: true },
-        { icon: '💬', label: 'Messages', active: false },
-        { icon: '👥', label: 'Contacts', active: false },
-        { icon: '📞', label: 'Calls', active: false },
-    ];
-
-    const recentChats: SidebarItem[] = [
-        { icon: '👤', label: 'Sarah Johnson' },
-        { icon: '👤', label: 'Team Alpha' },
-        { icon: '👤', label: 'David Chen' },
-    ];
-
-    const settings: SidebarItem[] = [
-        { icon: '⚙️', label: 'Preferences' },
-        { icon: '🔔', label: 'Notifications' },
-    ];
-
-    return (
-        <aside style={sidebarStyle}>
-            <SidebarSection title="Menu" items={menuItems} colors={colors} />
-            <SidebarSection title="Recent Chats" items={recentChats} colors={colors} />
-            <SidebarSection title="Settings" items={settings} colors={colors} />
-        </aside>
-    );
-}
-
-// Sidebar Section Component
-const SidebarSection = ({ title, items, colors }: { title: string; items: SidebarItem[]; colors: ThemeColors }) => {
-    const sectionStyle: CSSProperties = {
-        marginBottom: '2rem',
-    };
-
-    const titleStyle: CSSProperties = {
-        fontFamily: "'Syne', sans-serif",
-        fontSize: '0.75rem',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: '1.5px',
-        color: colors.textTertiary,
-        marginBottom: '1rem',
-        padding: '0 0.5rem',
-        animation: 'fadeInLeft 0.5s ease-out',
-    };
-
-    const itemStyle = (active: boolean, index: number): CSSProperties => ({
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        padding: '0.875rem 1rem',
-        borderRadius: '12px',
-        color: active ? 'white' : colors.textSecondary,
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        marginBottom: '0.5rem',
-        fontWeight: 500,
-        animation: `fadeInLeft ${0.3 + index * 0.1}s ease-out`,
-    });
-
-    const iconStyle: CSSProperties = {
-        fontSize: '1.25rem',
-    };
-
-    return (
-        <div style={sectionStyle}>
-            <div style={titleStyle}>{title}</div>
-            {items.map((item, index) => (
-                <div
-                    key={index}
-                    style={itemStyle(item.active || false, index)}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateX(5px)';
-                        e.currentTarget.style.background = colors.glassBg;
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateX(0)';
-                        e.currentTarget.style.background = 'transparent';
-                    }}
-                >
-                    <span style={iconStyle}>{item.icon}</span>
-                    <span>{item.label}</span>
-                </div>
-            ))}
-        </div>
-    );
-}
 
 // Main Content Component
-const MainContent = ({ colors }: { collapsed: boolean; colors: ThemeColors }) => {
+const MainContent = ({ colors }: { colors: ThemeColors }) => {
     const mainStyle: CSSProperties = {
         marginLeft: 0,
         marginTop: '70px',

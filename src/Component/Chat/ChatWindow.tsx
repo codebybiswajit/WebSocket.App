@@ -50,10 +50,8 @@ const ChatWindow = () => {
   // FIX: read res.data.contact (array), map to Contact shape
   useEffect(() => {
     UserService.getContacts(userId).then(res => {
-      // API returns { contact: [...] }
-      console.log('Fetched contacts:', res.data);
-      const raw: IdName[] = res.data?.contact ?? [];
 
+      const raw: IdName[] = res.data?.result ?? [];
       const mapped: Contact[] = raw.map((c) => ({
         id: c.id,
         name: c.name,

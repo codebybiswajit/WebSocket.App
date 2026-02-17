@@ -127,9 +127,9 @@ const Navbar = ({
 
     const pickerStyle: CSSProperties = {
         position: 'absolute',
-        top: 'calc(100% + 12px)',
+        top: isMobile ? 'calc(100% + 24px)' : 'calc(100% + 12px)',
         right: 0,
-        left: isMobile ? -132 : -128,
+        left: isMobile ? -113 : -128,
         background: colors.bgSecondary,
         border: `1px solid ${colors.glassBorder}`,
         borderRadius: '20px',

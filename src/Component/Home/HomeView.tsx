@@ -1,15 +1,16 @@
-import { useState, useEffect, type CSSProperties } from 'react';
-import ThemeConfig from '../../Utils/ThemeConfig';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { Theme, type Feature, type Message, type SidebarItem, type SidebarProps, type ThemeColors } from '../../Types/CommonTypes';
 import Spinner from '../../Utils/Spinner';
-import type { Feature, Message, NavbarProps, SidebarItem, SidebarProps, Theme } from '../../Types/CommonTypes';
+import ThemeConfig from '../../Utils/ThemeConfig';
 import ChatPreview from '../Chat/ChatPreview';
 import LoginModal from './Login';
+import Navbar from './Navbar';
 import SignupModal from './Signup';
 
 
 // Main App Component
 export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn: boolean) => void, loggedIn: boolean }) => {
-    const [theme, setTheme] = useState<Theme>('light');
+    const [theme, setTheme] = useState<Theme>(Theme.Light);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignupModal, setShowSignupModal] = useState(false);
@@ -17,12 +18,12 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
     const colors = ThemeConfig[theme];
 
     useEffect(() => {
-        const savedTheme = (localStorage.getItem('theme') as Theme) || 'light';
+        const savedTheme = (localStorage.getItem('theme') as Theme) || Theme.Light;
         setTheme(savedTheme);
     }, []);
 
     const toggleTheme = () => {
-        const newTheme: Theme = theme === 'dark' ? 'light' : 'dark';
+        const newTheme: Theme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
     };
@@ -187,13 +188,14 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
                 <AppBackground colors={colors} />
 
                 <Navbar
-                    theme={theme}
                     toggleTheme={toggleTheme}
                     toggleSidebar={toggleSidebar}
                     sidebarCollapsed={sidebarCollapsed}
                     onLoginClick={() => setShowLoginModal(true)}
                     onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
+                    setTheme={setTheme}
+                    theme={theme}
                 />
 
                 {loggedIn && <Sidebar collapsed={sidebarCollapsed} colors={colors} />}
@@ -231,7 +233,7 @@ export const HomeViewApp = ({ setLoggedIn, loggedIn }: { setLoggedIn: (loggedIn:
 }
 
 // App Background Component
-const AppBackground = ({ colors }: { colors: typeof ThemeConfig.light }) => {
+const AppBackground = ({ colors }: { colors: ThemeColors }) => {
     const containerStyle: CSSProperties = {
         position: 'fixed',
         top: 0,
@@ -264,182 +266,11 @@ const AppBackground = ({ colors }: { colors: typeof ThemeConfig.light }) => {
     );
 }
 
-// Navbar Component
-const Navbar = ({ theme, toggleTheme, toggleSidebar, sidebarCollapsed, onLoginClick, onSignupClick, colors }: NavbarProps & { colors: typeof ThemeConfig.light }) => {
-    const navbarStyle: CSSProperties = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '70px',
-        zIndex: 1000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 2rem',
-        background: colors.glassBg,
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-        border: `1px solid ${colors.glassBorder}`,
-        boxShadow: `0 8px 32px ${colors.glassShadow}`,
-        animation: 'fadeInDown 0.6s ease-out',
-    };
 
-    const navbarLeftStyle: CSSProperties = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.5rem',
-    };
 
-    const menuToggleStyle: CSSProperties = {
-        background: 'transparent',
-        border: 'none',
-        color: colors.textPrimary,
-        fontSize: '1.5rem',
-        cursor: 'pointer',
-        width: '40px',
-        height: '40px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '10px',
-        transition: 'all 0.3s ease',
-    };
-
-    const logoStyle: CSSProperties = {
-        fontFamily: "'Syne', -apple-system, sans-serif",
-        fontSize: '1.8rem',
-        fontWeight: 800,
-        color: colors.textPrimary,
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        letterSpacing: '-0.5px',
-        animation: 'fadeInLeft 0.8s ease-out',
-    };
-
-    const navbarRightStyle: CSSProperties = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        animation: 'fadeInRight 0.8s ease-out',
-    };
-
-    const themeToggleStyle: CSSProperties = {
-        background: colors.glassBg,
-        border: `1px solid ${colors.glassBorder}`,
-        color: colors.textPrimary,
-        width: '45px',
-        height: '45px',
-        borderRadius: '12px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'all 0.3s ease',
-        fontSize: '1.2rem',
-    };
-
-    const authButtonsStyle: CSSProperties = {
-        display: 'flex',
-        gap: '0.75rem',
-    };
-
-    const btnStyle: CSSProperties = {
-        padding: '0.75rem 1.5rem',
-        borderRadius: '12px',
-        fontWeight: 600,
-        fontSize: '0.95rem',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        fontFamily: "'DM Sans', sans-serif",
-    };
-
-    const btnOutlineStyle: CSSProperties = {
-        ...btnStyle,
-        background: 'transparent',
-        border: `2px solid ${colors.glassBorder}`,
-        color: colors.textPrimary,
-    };
-
-    const btnPrimaryStyle: CSSProperties = {
-        ...btnStyle,
-        background: `linear-gradient(135deg, ${colors.accentPrimary}, ${colors.bgGradientEnd})`,
-        color: 'white',
-        border: 'none',
-        boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
-    };
-
-    return (
-        <nav style={navbarStyle}>
-            <div style={navbarLeftStyle}>
-                <button
-                    style={menuToggleStyle}
-                    onClick={toggleSidebar}
-                    aria-label="Toggle menu"
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.1) rotate(90deg)';
-                        e.currentTarget.style.background = colors.glassBg;
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-                        e.currentTarget.style.background = 'transparent';
-                    }}
-                >
-                    <span>{sidebarCollapsed ? '☰' : '☰'}</span>
-                </button>
-                <div style={logoStyle}>My Chat by BM</div>
-            </div>
-            <div style={navbarRightStyle}>
-                <button
-                    style={themeToggleStyle}
-                    onClick={toggleTheme}
-                    aria-label="Toggle theme"
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.1) rotate(20deg)';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-                    }}
-                >
-                    <span>{theme === 'dark' ? '☀️' : '🌙'}</span>
-                </button>
-                <div style={authButtonsStyle}>
-                    <button
-                        style={btnOutlineStyle}
-                        onClick={onLoginClick}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.2)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = 'none';
-                        }}
-                    >
-                        Log In
-                    </button>
-                    <button
-                        style={btnPrimaryStyle}
-                        onClick={onSignupClick}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.6)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
-                        }}
-                    >
-                        Sign Up
-                    </button>
-                </div>
-            </div>
-        </nav>
-    );
-}
 
 // Sidebar Component
-const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: typeof ThemeConfig.light }) => {
+const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: ThemeColors }) => {
     const sidebarStyle: CSSProperties = {
         position: 'fixed',
         top: '70px',
@@ -487,7 +318,7 @@ const Sidebar = ({ collapsed, colors }: SidebarProps & { colors: typeof ThemeCon
 }
 
 // Sidebar Section Component
-const SidebarSection = ({ title, items, colors }: { title: string; items: SidebarItem[]; colors: typeof ThemeConfig.light }) => {
+const SidebarSection = ({ title, items, colors }: { title: string; items: SidebarItem[]; colors: ThemeColors }) => {
     const sectionStyle: CSSProperties = {
         marginBottom: '2rem',
     };
@@ -547,13 +378,14 @@ const SidebarSection = ({ title, items, colors }: { title: string; items: Sideba
 }
 
 // Main Content Component
-const MainContent = ({ colors }: { collapsed: boolean; colors: typeof ThemeConfig.light }) => {
+const MainContent = ({ colors }: { collapsed: boolean; colors: ThemeColors }) => {
     const mainStyle: CSSProperties = {
         marginLeft: 0,
         marginTop: '70px',
         padding: '3rem',
         minHeight: 'calc(100vh - 70px)',
         transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        background: colors.bgPrimary,
     };
 
     return (
@@ -564,7 +396,7 @@ const MainContent = ({ colors }: { collapsed: boolean; colors: typeof ThemeConfi
 }
 
 // Home View Component
-const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
+const HomeView = ({ colors }: { colors: ThemeColors }) => {
     const containerStyle: CSSProperties = {
         maxWidth: '1200px',
         margin: '0 auto',
@@ -675,7 +507,7 @@ const HomeView = ({ colors }: { colors: typeof ThemeConfig.light }) => {
 }
 
 // Features Grid Component
-const FeaturesGrid = ({ features, colors }: { features: Feature[]; colors: typeof ThemeConfig.light }) => {
+const FeaturesGrid = ({ features, colors }: { features: Feature[]; colors: ThemeColors }) => {
     const gridStyle: CSSProperties = {
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -693,7 +525,7 @@ const FeaturesGrid = ({ features, colors }: { features: Feature[]; colors: typeo
 }
 
 // Feature Card Component
-const FeatureCard = ({ feature, colors, index }: { feature: Feature; colors: typeof ThemeConfig.light; index: number }) => {
+const FeatureCard = ({ feature, colors, index }: { feature: Feature; colors: ThemeColors; index: number }) => {
     const cardStyle: CSSProperties = {
         padding: '2rem',
         borderRadius: '20px',

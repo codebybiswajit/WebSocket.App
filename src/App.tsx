@@ -8,11 +8,12 @@ import UserService from './Services/UserService';
 import NotFound from './Utils/NotFound';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const setUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId');
+  const setUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {
-      debugger;
       if (res.status === 200 && res?.data?.result?.id !== null) {
+        localStorage.setItem("tokens", res.data.tokens);
+        sessionStorage.setItem("tokens", res.data.tokens);
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
@@ -29,8 +30,8 @@ const App = () => {
     });
   }, []);
   useEffect(() => {
-    const setToken = sessionStorage.getItem('token') ?? localStorage.getItem('token');
-    const tempSetUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId');
+    const setToken = JSON.parse(sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? 'null');
+    const tempSetUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
   console.log('User is logged in with userId:', loggedIn);

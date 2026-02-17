@@ -38,7 +38,7 @@ const ChatWindow = () => {
   const [mobileView, setMobileView] = useState<'contacts' | 'chat'>('contacts');
   const [isMobile, setIsMobile] = useState(false);
 
-  const userId = (sessionStorage.getItem('userId') || localStorage.getItem('userId') || '');
+  const userId = JSON.parse(sessionStorage.getItem('userId') || localStorage.getItem('userId') || 'null');
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
@@ -86,7 +86,7 @@ const ChatWindow = () => {
   };
 
   const handleLogout = async () => {
-    const id = sessionStorage.getItem('userId') || localStorage.getItem('userId') || '';
+    const id = JSON.parse(sessionStorage.getItem('userId') || localStorage.getItem('userId') || 'null');
     await UserService.logOut(id).then(() => window.location.reload());
   };
 

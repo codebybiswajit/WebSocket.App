@@ -7,7 +7,6 @@ const Navbar = ({
     onLoginClick,
     onSignupClick,
     colors,
-    setTheme,
 }: NavbarProps) => {
     const [showPicker, setShowPicker] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -57,21 +56,6 @@ const Navbar = ({
         display: 'flex',
         alignItems: 'center',
         gap: isMobile ? '0.75rem' : '1.5rem',
-    };
-
-    const menuToggleStyle: CSSProperties = {
-        background: 'transparent',
-        border: 'none',
-        color: colors.textPrimary,
-        fontSize: '1.5rem',
-        cursor: 'pointer',
-        width: '40px',
-        height: '40px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '10px',
-        transition: 'all 0.3s ease',
     };
 
     const logoStyle: CSSProperties = {
@@ -256,12 +240,7 @@ const Navbar = ({
                                             key={key}
                                             className="theme-card"
                                             onClick={() => {
-                                                // Use setTheme for all theme changes
-                                                setTheme(meta.id as Theme);
-                                                // Preserve original toggleTheme for light↔dark quick swap
-                                                if ((key === 'light' || key === 'dark') && key !== theme) {
-                                                    toggleTheme();
-                                                }
+                                                toggleTheme(meta.id as Theme);
                                                 setShowPicker(false);
                                             }}
                                             title={meta.label}

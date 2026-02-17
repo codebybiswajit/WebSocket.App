@@ -21,10 +21,9 @@ export const HomeViewApp = ({ setLoggedIn }: { setLoggedIn: (loggedIn: boolean) 
         setTheme(savedTheme);
     }, []);
 
-    const toggleTheme = () => {
-        const newTheme: Theme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
+    const toggleTheme = (theme: Theme) => {
+        setTheme(theme);
+        localStorage.setItem('theme', theme);
     };
 
     const appStyles: CSSProperties = {
@@ -186,7 +185,6 @@ export const HomeViewApp = ({ setLoggedIn }: { setLoggedIn: (loggedIn: boolean) 
                     onLoginClick={() => setShowLoginModal(true)}
                     onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
-                    setTheme={setTheme}
                     theme={theme}
                 />
 

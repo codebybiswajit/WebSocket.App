@@ -36,13 +36,13 @@ export interface ThemeMeta {
 
 export interface NavbarProps {
     theme: Theme;
-    toggleTheme: () => void;
+    toggleTheme: (theme: Theme) => void;
     toggleSidebar?: () => void;
     sidebarCollapsed?: boolean;
     onLoginClick: () => void;
     onSignupClick: () => void;
     colors: ThemeColors;
-    setTheme: (theme: Theme) => void;
+    // setTheme: (theme: Theme) => void;
 }
 
 export interface SidebarProps {

@@ -6,8 +6,11 @@ import { HomeViewApp } from './Component/Home/HomeView';
 import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
 import NotFound from './Utils/NotFound';
+import ThemeConfig from './Utils/ThemeConfig';
+import { Theme } from './Types/CommonTypes';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [theme, setTheme] = useState<Theme>(Theme.Light);
   const setUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {
@@ -34,27 +37,32 @@ const App = () => {
     const tempSetUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
-  console.log('User is logged in with userId:', loggedIn);
   return (
-    <ChatProvider>
-      <BrowserRouter>
-        <Routes>
-          {!loggedIn && (
-            <>
-              <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} />} />
-              <Route path="/chat" element={<Navigate to="/" replace />} />
-            </>
-          )}
-          {loggedIn && (
-            <>
-              <Route path="/" element={<Navigate to="/chat" replace />} />
-              <Route path="/chat" element={<ChatWindow />} />
-            </>
-          )}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </ChatProvider>
+    <>
+      <ChatProvider>
+        <BrowserRouter>
+          <Routes>
+            {!loggedIn && (
+              <>
+                <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} setTheme={setTheme} theme={theme} />} />
+                <Route path="/chat" element={<Navigate to="/" replace />} />
+              </>
+            )}
+            {loggedIn && (
+              <>
+                <Route path="/" element={<Navigate to="/chat" replace />} />
+                <Route path="/chat" element={<ChatWindow />} />
+              </>
+            )}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ChatProvider>
+      <div style={{ textAlign: "center", padding: "10px", fontSize: "14px", background: ThemeConfig[theme].bgPrimary, color: ThemeConfig[theme].textPrimary }}>
+        © 2026 <a href="https://websocket-app-codebybiswajit.onrender.com">websocket-app-codebybiswajit.onrender.com</a> — All rights reserved. || All trademarks and copyrights belong to Biswajit Mohapatra.
+      </div>
+    </>
+
   );
 };
 

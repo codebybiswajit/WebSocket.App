@@ -12,8 +12,8 @@ class UserReturnServices {
     login = async (userName: string, password: string) => {
         return await axios.post(`${this.route}/login`, { userName, password });
     }
-    signup = async ({ rq }: { rq: UserSignup }) => {
-        return await axios.post(`${this.route}`, rq);
+    signup = async ({ user }: { user: UserSignup }) => {
+        return await axios.post(`${this.route}`, user);
     }
 
     getContacts = async (id: string) => {

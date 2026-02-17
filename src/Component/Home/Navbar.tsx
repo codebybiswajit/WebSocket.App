@@ -129,6 +129,7 @@ const Navbar = ({
         position: 'absolute',
         top: 'calc(100% + 12px)',
         right: 0,
+        left: isMobile ? -132 : -128,
         background: colors.bgSecondary,
         border: `1px solid ${colors.glassBorder}`,
         borderRadius: '20px',
@@ -189,7 +190,7 @@ const Navbar = ({
                     >
                         <span>{sidebarCollapsed ? '☰' : '☰'}</span>
                     </button> */}
-                    <div style={logoStyle}>My Chat by BM</div>
+                    <div style={logoStyle}>My Chat</div>
                 </div>
 
                 {/* ── Right ── */}

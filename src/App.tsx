@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import ChatWindow from './Component/Chat/ChatWindow';
-import { HomeViewApp } from './Component/Home/HomeView';
+import { AppBackground, HomeViewApp } from './Component/Home/HomeView';
+import Navbar from './Component/Home/Navbar';
 import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
 import { Theme } from './Types/CommonTypes';
@@ -10,7 +11,7 @@ import NotFound from './Utils/NotFound';
 import ThemeConfig from './Utils/ThemeConfig';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [theme, setTheme] = useState<Theme>(Theme.Light);
+  const [theme, setTheme] = useState<Theme>(Theme.Dark);
   const setUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {
@@ -30,20 +31,38 @@ const App = () => {
         sessionStorage.removeItem("userId");
       }
     });
-  }, []);
+  }, [setUserid]);
   useEffect(() => {
     const setToken = sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? '';
     const tempSetUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
+  const toggleTheme = (theme: Theme) => {
+    setTheme(theme);
+    localStorage.setItem('theme', theme);
+  };
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const colors = ThemeConfig[theme];
+
   return (
     <>
+      <AppBackground colors={colors} />
+
+      <Navbar
+        toggleTheme={toggleTheme}
+        onLoginClick={() => setShowLoginModal(true)}
+        onSignupClick={() => setShowSignupModal(true)}
+        colors={colors}
+        theme={theme}
+      />
+
       <ChatProvider>
         <BrowserRouter>
           <Routes>
             {!loggedIn && (
               <>
-                <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} setTheme={setTheme} theme={theme} />} />
+                <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} setTheme={setTheme} theme={theme} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} showSignupModal={showSignupModal} setShowSignupModal={setShowSignupModal} />} />
                 <Route path="/chat" element={<Navigate to="/" replace />} />
               </>
             )}

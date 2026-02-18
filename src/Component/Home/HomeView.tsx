@@ -28,10 +28,6 @@ export const HomeViewApp = ({ setLoggedIn, setTheme, theme, showLoginModal, setS
         setTheme(savedTheme);
     }, []);
 
-    const toggleTheme = (theme: Theme) => {
-        setTheme(theme);
-        localStorage.setItem('theme', theme);
-    };
 
     const appStyles: CSSProperties = {
         margin: 0,

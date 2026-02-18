@@ -5,25 +5,24 @@ import ChatWindow from './Component/Chat/ChatWindow';
 import { HomeViewApp } from './Component/Home/HomeView';
 import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
+import { Theme } from './Types/CommonTypes';
 import NotFound from './Utils/NotFound';
 import ThemeConfig from './Utils/ThemeConfig';
-import { Theme } from './Types/CommonTypes';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [theme, setTheme] = useState<Theme>(Theme.Light);
-  const setUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
+  const setUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {
       if (res.status === 200 && res?.data?.result?.id !== null) {
-        localStorage.setItem("tokens", res.data.tokens);
-        sessionStorage.setItem("tokens", res.data.tokens);
+        localStorage.setItem("token", res.data.tokens);
+        sessionStorage.setItem("token", res.data.tokens);
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
       }
     }).catch(err => {
       setLoggedIn(false);
-      console.error('Session check error:', err);
       if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -33,8 +32,8 @@ const App = () => {
     });
   }, []);
   useEffect(() => {
-    const setToken = JSON.parse(sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? 'null');
-    const tempSetUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
+    const setToken = sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? '';
+    const tempSetUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
   return (

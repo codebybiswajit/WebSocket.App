@@ -102,11 +102,12 @@ const LoginModal = ({ onClose, onSwitchToSignup, onSuccessfulLogin, setLoading, 
             setLoading(true);
             await UserService.login(values.userName.trim(), values.password).then((res: any) => {
                 if (res.status === 200 || res?.result?.status == true) {
+                    console.log(res);
 
                     localStorage.setItem("token", res?.data?.res?.token ?? null);
-                    localStorage.setItem("userId", JSON.stringify(res?.data?.userId ?? null));
+                    localStorage.setItem("userId", res?.data?.userId ?? null);
                     sessionStorage.setItem("token", res?.data?.res?.token ?? null);
-                    sessionStorage.setItem("userId", JSON.stringify(res?.data?.userId ?? null));
+                    sessionStorage.setItem("userId", res?.data?.userId ?? null);
                     // alert("Login successful! Welcome back.");
                     onSuccessfulLogin();
                 }

@@ -2,28 +2,28 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import ChatWindow from './Component/Chat/ChatWindow';
-import { HomeViewApp } from './Component/Home/HomeView';
+import { AppBackground, HomeViewApp } from './Component/Home/HomeView';
+import Navbar from './Component/Home/Navbar';
 import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
+import { Theme } from './Types/CommonTypes';
 import NotFound from './Utils/NotFound';
 import ThemeConfig from './Utils/ThemeConfig';
-import { Theme } from './Types/CommonTypes';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [theme, setTheme] = useState<Theme>(Theme.Light);
-  const setUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
+  const [theme, setTheme] = useState<Theme>(Theme.Dark);
+  const setUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {
       if (res.status === 200 && res?.data?.result?.id !== null) {
-        localStorage.setItem("tokens", res.data.tokens);
-        sessionStorage.setItem("tokens", res.data.tokens);
+        localStorage.setItem("token", res.data.tokens);
+        sessionStorage.setItem("token", res.data.tokens);
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
       }
     }).catch(err => {
       setLoggedIn(false);
-      console.error('Session check error:', err);
       if (err.response && err.response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -31,20 +31,38 @@ const App = () => {
         sessionStorage.removeItem("userId");
       }
     });
-  }, []);
+  }, [setUserid]);
   useEffect(() => {
-    const setToken = JSON.parse(sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? 'null');
-    const tempSetUserid = JSON.parse(sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? 'null');
+    const setToken = sessionStorage.getItem('token') ?? localStorage.getItem('token') ?? '';
+    const tempSetUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
+  const toggleTheme = (theme: Theme) => {
+    setTheme(theme);
+    localStorage.setItem('theme', theme);
+  };
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const colors = ThemeConfig[theme];
+
   return (
     <>
+      <AppBackground colors={colors} />
+
+      <Navbar
+        toggleTheme={toggleTheme}
+        onLoginClick={() => setShowLoginModal(true)}
+        onSignupClick={() => setShowSignupModal(true)}
+        colors={colors}
+        theme={theme}
+      />
+
       <ChatProvider>
         <BrowserRouter>
           <Routes>
             {!loggedIn && (
               <>
-                <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} setTheme={setTheme} theme={theme} />} />
+                <Route path="/" element={<HomeViewApp setLoggedIn={setLoggedIn} setTheme={setTheme} theme={theme} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} showSignupModal={showSignupModal} setShowSignupModal={setShowSignupModal} />} />
                 <Route path="/chat" element={<Navigate to="/" replace />} />
               </>
             )}

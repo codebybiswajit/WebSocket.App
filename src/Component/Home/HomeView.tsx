@@ -4,14 +4,22 @@ import Spinner from '../../Utils/Spinner';
 import ThemeConfig from '../../Utils/ThemeConfig';
 import ChatPreview from '../Chat/ChatPreview';
 import LoginModal from './Login';
-import Navbar from './Navbar';
 import SignupModal from './Signup';
+interface HomeViewProps {
+    setLoggedIn: (loggedIn: boolean) => void;
+    theme: Theme;
+    setTheme: (theme: Theme) => void;
 
+    showLoginModal?: boolean;
+    setShowLoginModal: (show: boolean) => void;
+
+    showSignupModal?: boolean;
+    setShowSignupModal: (show: boolean) => void;
+}
 
 // Main App Component
-export const HomeViewApp = ({ setLoggedIn,setTheme ,theme}: { setLoggedIn: (loggedIn: boolean) => void, setTheme: (theme: Theme) => void ,theme : Theme}) => {
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showSignupModal, setShowSignupModal] = useState(false);
+export const HomeViewApp = ({ setLoggedIn, setTheme, theme, showLoginModal, setShowLoginModal, showSignupModal, setShowSignupModal }:
+    HomeViewProps) => {
     const [loading, setLoading] = useState(false);
     const colors = ThemeConfig[theme];
 
@@ -179,13 +187,13 @@ export const HomeViewApp = ({ setLoggedIn,setTheme ,theme}: { setLoggedIn: (logg
             <div style={appStyles}>
                 <AppBackground colors={colors} />
 
-                <Navbar
+                {/* <Navbar
                     toggleTheme={toggleTheme}
                     onLoginClick={() => setShowLoginModal(true)}
                     onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
                     theme={theme}
-                />
+                /> */}
 
 
                 <MainContent colors={colors} />
@@ -225,7 +233,7 @@ export const HomeViewApp = ({ setLoggedIn,setTheme ,theme}: { setLoggedIn: (logg
 }
 
 // App Background Component
-const AppBackground = ({ colors }: { colors: ThemeColors }) => {
+export const AppBackground = ({ colors }: { colors: ThemeColors }) => {
     const containerStyle: CSSProperties = {
         position: 'fixed',
         top: 0,

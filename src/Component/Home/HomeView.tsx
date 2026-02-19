@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { Theme, type Feature, type Message, type ThemeColors } from '../../Types/CommonTypes';
 import Spinner from '../../Utils/Spinner';
 import ThemeConfig from '../../Utils/ThemeConfig';

@@ -750,7 +750,7 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
       {activeModal === 'createGroup' && <CreateGroupModal onClose={() => setActiveModal(null)} color={color} />}
 
       <div style={{
-        display: 'flex', width: '100%', height: '100vh',
+        display: 'flex', width: '100%', height: 'calc(100vh - 70px)',
         backgroundColor: color.bgPrimary,
         overflow: 'hidden',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',

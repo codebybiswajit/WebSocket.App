@@ -455,6 +455,7 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
 
     const [selectedContact, setSelectedContact] = useState<string>('');
     const [contacts, setContacts] = useState<Contact[]>([]);
+    const [showContacts, setShowContacts] = useState(true);
     const [search, setSearch] = useState('');
     const [activeModal, setActiveModal] = useState<ModalType>(null);
 
@@ -465,12 +466,14 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
             const raw: IdName[] = res.data?.result ?? [];
             const mapped: Contact[] = raw.map(c => ({ id: c.id, name: c.name }));
             setContacts(mapped);
+            setShowContacts(true);
         });
     }, [userId, setActiveConversation]);
 
     const handleContactSelect = (c: Contact) => {
         setSelectedContact(c.id);
         setActiveConversation(c.id);
+        setShowContacts(false);
     };
 
     const handleSendMessage = async (msg: string) => {
@@ -660,7 +663,7 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
                 <button
                     className="cw-icon-btn"
                     style={iconBtnStyle}
-                    onClick={() => setSelectedContact('')}
+                    onClick={() => { setSelectedContact(''); setShowContacts(true); }}
                 >
                     <BackIcon color={color.textSecondary} />
                 </button>
@@ -749,28 +752,27 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
             {activeModal === 'createGroup' && <CreateGroupModal onClose={() => setActiveModal(null)} color={color} />}
 
             <div style={{
-                width: '100%', height: '100dvh', position: 'relative',
+                width: '100%', height: 'calc(100vh - 70px)', position: 'relative',
                 overflow: 'hidden', backgroundColor: color.bgPrimary,
             }}>
                 {/* Contacts View */}
-                <div style={{
+                {/* Contacts View (default visible) */}
+                {showContacts && <div style={{
                     position: 'absolute', inset: 0,
-                    transform: selectedContact ? 'translateX(-100%)' : 'translateX(0)',
+                    transform: showContacts ? 'translateX(0)' : 'translateX(-100%)',
                     transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
-                    zIndex: selectedContact ? 1 : 2,
                 }}>
                     {contactListJSX}
-                </div>
+                </div>}
 
-                {/* Chat View */}
-                <div style={{
+                {/* Chat View (visible when a contact is selected) */}
+                {!showContacts && <div style={{
                     position: 'absolute', inset: 0,
-                    transform: selectedContact ? 'translateX(0)' : 'translateX(100%)',
+                    transform: showContacts ? 'translateX(100%)' : 'translateX(0)',
                     transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
-                    zIndex: selectedContact ? 2 : 1,
                 }}>
                     {chatAreaJSX}
-                </div>
+                </div>}
             </div>
         </>
     );

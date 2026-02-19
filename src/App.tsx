@@ -8,8 +8,8 @@ import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
 import { Theme } from './Types/CommonTypes';
 import NotFound from './Utils/NotFound';
-import NotFoundThreeJS from './Utils/NotFoundMetrics';
 import ThemeConfig from './Utils/ThemeConfig';
+import MobileChatWindow from './Component/Chat/MobileChatWindow';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [theme, setTheme] = useState<Theme>(Theme.Dark);
@@ -47,25 +47,14 @@ const App = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const toggleTheme = (theme: Theme) => {
-    setTheme(theme);
-    localStorage.setItem('theme', theme);
-  };
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const colors = ThemeConfig[theme];
 
   return (
     <>
-      <AppBackground colors={colors} />
-
-      <Navbar
-        toggleTheme={toggleTheme}
-        onLoginClick={() => setShowLoginModal(true)}
-        onSignupClick={() => setShowSignupModal(true)}
-        colors={colors}
-        theme={theme}
-      />
+      
 
       <ChatProvider>
         <BrowserRouter>
@@ -79,8 +68,8 @@ const App = () => {
             {loggedIn && isMobile && (
               <>
                 <Route path="/" element={<Navigate to="/chat" replace />} />
-                {/* <Route path="/chat" element={<MobileChatWindow color={colors} />} /> */}
-                <Route path="/chat" element={<NotFoundThreeJS />} />
+                <Route path="/chat" element={<MobileChatWindow color={colors} />} />
+                {/* <Route path="/chat" element={<NotFoundThreeJS />} /> */}
               </>
             )}
             {loggedIn && !isMobile && (

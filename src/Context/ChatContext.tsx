@@ -94,7 +94,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         isMountedRef.current = true;
 
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl(HUB_URL)
+            .withUrl(HUB_URL, {
+                accessTokenFactory: () => localStorage.getItem('token') || sessionStorage.getItem('token') || ''
+            })
             .withAutomaticReconnect({
                 nextRetryDelayInMilliseconds: (ctx) =>
                     ctx.elapsedMilliseconds < 60_000

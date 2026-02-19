@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { Theme, THEME_GRADIENTS, THEME_META, type ThemeColors } from '../../Types/CommonTypes';
+import { Theme, THEME_GRADIENTS, THEME_META, type ThemeColors } from '../Types/CommonTypes';
 
 interface ThemePickerProps {
     theme: Theme;

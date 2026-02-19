@@ -11,7 +11,9 @@ import NotFound from './Utils/NotFound';
 import ThemeConfig from './Utils/ThemeConfig';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [theme, setTheme] = useState<Theme>(Theme.Dark);
+  const [theme, setTheme] = useState<Theme>(() => {
+    return (localStorage.getItem('theme') as Theme) || (sessionStorage.getItem('theme') as Theme) || Theme.Dark;
+  });
   const setUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
   useEffect(() => {
     UserService.getSession(setUserid ?? "").then(res => {

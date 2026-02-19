@@ -5,9 +5,9 @@ import { ConnectionStatus } from '../../Types/Chat';
 import { Theme, type IdName, type ThemeColors } from '../../Types/CommonTypes';
 import { BackIcon, CheckIcon, CloseIcon, DotsIcon, GroupIcon, PhoneIcon, SearchIcon, UserIcon, UserPlusIcon, VideoIcon } from '../../Utils/svg';
 import WSToast from '../../Utils/WSToast';
-import ThemePicker from '../Utils/ThemePicker';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
+import ThemePicker from '../../Utils/ThemePicker';
 
 interface Contact {
     id: string;
@@ -650,7 +650,7 @@ const MobileChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setT
                                         {contact.time ?? ''}
                                     </span>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'start' }}>
                                     <span style={{
                                         color: color.textSecondary, fontSize: '14px',
                                         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1,
@@ -777,7 +777,7 @@ const MobileChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setT
             {activeModal === 'createGroup' && <CreateGroupModal onClose={() => setActiveModal(null)} color={color} />}
 
             <div style={{
-                width: '100%', height: 'calc(100vh - 70px)', position: 'relative',
+                width: '100%', height: ' 100vh', position: 'relative',
                 overflow: 'hidden', backgroundColor: color.bgPrimary,
             }}>
                 {/* Contacts View */}

@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import ChatWindow from './Component/Chat/ChatWindow';
-import { AppBackground, HomeViewApp } from './Component/Home/HomeView';
-import Navbar from './Component/Home/Navbar';
+import MobileChatWindow from './Component/Chat/MobileChatWindow';
+import { HomeViewApp } from './Component/Home/HomeView';
 import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
 import { Theme } from './Types/CommonTypes';
 import NotFound from './Utils/NotFound';
 import ThemeConfig from './Utils/ThemeConfig';
-import MobileChatWindow from './Component/Chat/MobileChatWindow';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [theme, setTheme] = useState<Theme>(Theme.Dark);
@@ -54,7 +53,7 @@ const App = () => {
 
   return (
     <>
-      
+
 
       <ChatProvider>
         <BrowserRouter>
@@ -82,9 +81,9 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </ChatProvider>
-      <div style={{ textAlign: "center", padding: "10px", fontSize: "14px", background: ThemeConfig[theme].bgPrimary, color: ThemeConfig[theme].textPrimary }}>
+      {!isMobile && <div style={{ textAlign: "center", padding: "10px", fontSize: "14px", background: ThemeConfig[theme].bgPrimary, color: ThemeConfig[theme].textPrimary }}>
         © 2026 <a href="https://websocket-app-codebybiswajit.onrender.com">websocket-app-codebybiswajit.onrender.com</a> — All rights reserved. || All trademarks and copyrights belong to Biswajit Mohapatra.
-      </div>
+      </div>}
     </>
 
   );

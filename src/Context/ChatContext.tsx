@@ -324,6 +324,5 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         loadConversationHistory, loadGroupHistory,
         notifyTyping, notifyStopTyping, unreadCounts,
     };
-
     return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };

@@ -4,6 +4,7 @@ import Spinner from '../../Utils/Spinner';
 import ThemeConfig from '../../Utils/ThemeConfig';
 import ChatPreview from '../Chat/ChatPreview';
 import LoginModal from './Login';
+import Navbar from './Navbar';
 import SignupModal from './Signup';
 interface HomeViewProps {
     setLoggedIn: (loggedIn: boolean) => void;
@@ -28,6 +29,10 @@ export const HomeViewApp = ({ setLoggedIn, setTheme, theme, showLoginModal, setS
         setTheme(savedTheme);
     }, []);
 
+    const toggleTheme = (theme: Theme) => {
+        setTheme(theme);
+        localStorage.setItem('theme', theme);
+    };
 
     const appStyles: CSSProperties = {
         margin: 0,
@@ -183,13 +188,13 @@ export const HomeViewApp = ({ setLoggedIn, setTheme, theme, showLoginModal, setS
             <div style={appStyles}>
                 <AppBackground colors={colors} />
 
-                {/* <Navbar
+                <Navbar
                     toggleTheme={toggleTheme}
                     onLoginClick={() => setShowLoginModal(true)}
                     onSignupClick={() => setShowSignupModal(true)}
                     colors={colors}
                     theme={theme}
-                /> */}
+                />
 
 
                 <MainContent colors={colors} />

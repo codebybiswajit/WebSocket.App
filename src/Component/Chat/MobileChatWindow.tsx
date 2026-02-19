@@ -1,10 +1,11 @@
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useChat } from '../../Context/ChatContext';
 import UserService from '../../Services/UserService';
 import { ConnectionStatus } from '../../Types/Chat';
-import type { IdName, ThemeColors } from '../../Types/CommonTypes';
+import { Theme, type IdName, type ThemeColors } from '../../Types/CommonTypes';
 import { BackIcon, CheckIcon, CloseIcon, DotsIcon, GroupIcon, PhoneIcon, SearchIcon, UserIcon, UserPlusIcon, VideoIcon } from '../../Utils/svg';
 import WSToast from '../../Utils/WSToast';
+import ThemePicker from '../Utils/ThemePicker';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 
@@ -338,8 +339,14 @@ const AddContactModal = ({ onClose, color }: { onClose: () => void; color: Theme
         if (!selected[0]) return;
         setBusy(true);
         try {
-            WSToast.success('This feature is coming soon!');
-            onClose();
+            await UserService.createFriend(sessionStorage.getItem('userId') || localStorage.getItem('userId') || '', selected[0]).then(() => {
+                WSToast.success('Contact added successfully!');
+                onClose();
+            }).catch(() => {
+                WSToast.error('Failed to add contact. Please try again.');
+            }).finally(() => {
+                onClose();
+            })
         }
         catch (e) { console.error(e); } finally { setBusy(false); }
     };
@@ -439,7 +446,7 @@ const CreateGroupModal = ({ onClose, color }: { onClose: () => void; color: Them
 
 // ─── Mobile Main Component ───────────────────────────────────────────────────────────
 
-const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
+const MobileChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: (theme: Theme) => void; theme: Theme }) => {
     const {
         getMessages,
         onlineCount,
@@ -451,13 +458,17 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
         setActiveConversation,
         notifyTyping,
         notifyStopTyping,
+        loadConversationHistory,
     } = useChat();
-
     const [selectedContact, setSelectedContact] = useState<string>('');
     const [contacts, setContacts] = useState<Contact[]>([]);
+    const toggleTheme = (theme: Theme) => {
+        setTheme(theme);
+        localStorage.setItem('theme', theme);
+    };
+    const [showContacts, setShowContacts] = useState(true);
     const [search, setSearch] = useState('');
     const [activeModal, setActiveModal] = useState<ModalType>(null);
-
     const userId = sessionStorage.getItem('userId') || localStorage.getItem('userId') || '';
 
     useEffect(() => {
@@ -465,12 +476,21 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
             const raw: IdName[] = res.data?.result ?? [];
             const mapped: Contact[] = raw.map(c => ({ id: c.id, name: c.name }));
             setContacts(mapped);
+            setShowContacts(true);
         });
-    }, [userId, setActiveConversation]);
+    }, [userId, setActiveConversation, loadConversationHistory]);
 
-    const handleContactSelect = (c: Contact) => {
+    const handleContactSelect = async (c: Contact) => {
         setSelectedContact(c.id);
         setActiveConversation(c.id);
+        setShowContacts(false);
+
+        // Load chat history from API on contact selection
+        try {
+            await loadConversationHistory(c.id);
+        } catch (e) {
+            console.warn('Failed to load message history:', e);
+        }
     };
 
     const handleSendMessage = async (msg: string) => {
@@ -530,6 +550,13 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
                     </div>
                     <span style={{ color: color.textPrimary, fontSize: '18px', fontWeight: 600 }}>Chats</span>
                 </div>
+                {/* Theme Picker Component */}
+                <ThemePicker
+                    theme={theme}
+                    colors={color}
+                    toggleTheme={toggleTheme}
+                    isMobile={true}
+                />
             </div>
 
             {/* Search + Dot Menu */}
@@ -660,7 +687,7 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
                 <button
                     className="cw-icon-btn"
                     style={iconBtnStyle}
-                    onClick={() => setSelectedContact('')}
+                    onClick={() => { setSelectedContact(''); setShowContacts(true); }}
                 >
                     <BackIcon color={color.textSecondary} />
                 </button>
@@ -749,28 +776,27 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
             {activeModal === 'createGroup' && <CreateGroupModal onClose={() => setActiveModal(null)} color={color} />}
 
             <div style={{
-                width: '100%', height: '100dvh', position: 'relative',
+                width: '100%', height: 'calc(100vh - 70px)', position: 'relative',
                 overflow: 'hidden', backgroundColor: color.bgPrimary,
             }}>
                 {/* Contacts View */}
-                <div style={{
+                {/* Contacts View (default visible) */}
+                {showContacts && <div style={{
                     position: 'absolute', inset: 0,
-                    transform: selectedContact ? 'translateX(-100%)' : 'translateX(0)',
+                    transform: showContacts ? 'translateX(0)' : 'translateX(-100%)',
                     transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
-                    zIndex: selectedContact ? 1 : 2,
                 }}>
                     {contactListJSX}
-                </div>
+                </div>}
 
-                {/* Chat View */}
-                <div style={{
+                {/* Chat View (visible when a contact is selected) */}
+                {!showContacts && <div style={{
                     position: 'absolute', inset: 0,
-                    transform: selectedContact ? 'translateX(0)' : 'translateX(100%)',
+                    transform: showContacts ? 'translateX(100%)' : 'translateX(0)',
                     transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
-                    zIndex: selectedContact ? 2 : 1,
                 }}>
                     {chatAreaJSX}
-                </div>
+                </div>}
             </div>
         </>
     );

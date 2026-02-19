@@ -67,14 +67,14 @@ const App = () => {
             {loggedIn && isMobile && (
               <>
                 <Route path="/" element={<Navigate to="/chat" replace />} />
-                <Route path="/chat" element={<MobileChatWindow color={colors} />} />
+                <Route path="/chat" element={<MobileChatWindow color={colors} setTheme={setTheme} theme={theme} />} />
                 {/* <Route path="/chat" element={<NotFoundThreeJS />} /> */}
               </>
             )}
             {loggedIn && !isMobile && (
               <>
                 <Route path="/" element={<Navigate to="/chat" replace />} />
-                <Route path="/chat" element={<ChatWindow color={colors} />} />
+                <Route path="/chat" element={<ChatWindow color={colors} setTheme={setTheme} theme={theme} />} />
               </>
             )}
             <Route path="*" element={<NotFound />} />

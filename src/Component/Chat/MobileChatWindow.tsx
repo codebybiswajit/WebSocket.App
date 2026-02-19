@@ -1,10 +1,11 @@
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useChat } from '../../Context/ChatContext';
 import UserService from '../../Services/UserService';
 import { ConnectionStatus } from '../../Types/Chat';
-import type { IdName, ThemeColors } from '../../Types/CommonTypes';
+import { Theme, type IdName, type ThemeColors } from '../../Types/CommonTypes';
 import { BackIcon, CheckIcon, CloseIcon, DotsIcon, GroupIcon, PhoneIcon, SearchIcon, UserIcon, UserPlusIcon, VideoIcon } from '../../Utils/svg';
 import WSToast from '../../Utils/WSToast';
+import ThemePicker from '../Utils/ThemePicker';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 
@@ -345,7 +346,7 @@ const AddContactModal = ({ onClose, color }: { onClose: () => void; color: Theme
                 WSToast.error('Failed to add contact. Please try again.');
             }).finally(() => {
                 onClose();
-                })
+            })
         }
         catch (e) { console.error(e); } finally { setBusy(false); }
     };
@@ -445,7 +446,7 @@ const CreateGroupModal = ({ onClose, color }: { onClose: () => void; color: Them
 
 // ─── Mobile Main Component ───────────────────────────────────────────────────────────
 
-const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
+const MobileChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: (theme: Theme) => void; theme: Theme }) => {
     const {
         getMessages,
         onlineCount,
@@ -459,13 +460,15 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
         notifyStopTyping,
         loadConversationHistory,
     } = useChat();
-
     const [selectedContact, setSelectedContact] = useState<string>('');
     const [contacts, setContacts] = useState<Contact[]>([]);
+    const toggleTheme = (theme: Theme) => {
+        setTheme(theme);
+        localStorage.setItem('theme', theme);
+    };
     const [showContacts, setShowContacts] = useState(true);
     const [search, setSearch] = useState('');
     const [activeModal, setActiveModal] = useState<ModalType>(null);
-
     const userId = sessionStorage.getItem('userId') || localStorage.getItem('userId') || '';
 
     useEffect(() => {
@@ -481,7 +484,7 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
         setSelectedContact(c.id);
         setActiveConversation(c.id);
         setShowContacts(false);
-        
+
         // Load chat history from API on contact selection
         try {
             await loadConversationHistory(c.id);
@@ -547,6 +550,13 @@ const MobileChatWindow = ({ color }: { color: ThemeColors }) => {
                     </div>
                     <span style={{ color: color.textPrimary, fontSize: '18px', fontWeight: 600 }}>Chats</span>
                 </div>
+                {/* Theme Picker Component */}
+                <ThemePicker
+                    theme={theme}
+                    colors={color}
+                    toggleTheme={toggleTheme}
+                    isMobile={true}
+                />
             </div>
 
             {/* Search + Dot Menu */}

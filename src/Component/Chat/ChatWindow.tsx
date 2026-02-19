@@ -2,9 +2,10 @@ import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { useChat } from '../../Context/ChatContext';
 import UserService from '../../Services/UserService';
 import { ConnectionStatus } from '../../Types/Chat';
-import type { IdName, ThemeColors } from '../../Types/CommonTypes';
+import type { IdName, Theme, ThemeColors } from '../../Types/CommonTypes';
 import { BackIcon, CheckIcon, CloseIcon, DotsIcon, GroupIcon, PhoneIcon, SearchIcon, UserIcon, UserPlusIcon, VideoIcon } from '../../Utils/svg';
 import WSToast from '../../Utils/WSToast';
+import ThemePicker from '../Utils/ThemePicker';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 
@@ -446,7 +447,7 @@ const CreateGroupModal = ({ onClose, color }: { onClose: () => void; color: Them
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
+const ChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: (theme: Theme) => void; theme: Theme }) => {
   const {
     getMessages,
     onlineCount,
@@ -466,10 +467,13 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [search, setSearch] = useState('');
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-
+  const [showRightSidebar, setShowRightSidebar] = useState(false);
   const userId = sessionStorage.getItem('userId') || localStorage.getItem('userId') || '';
 
-
+  const toggleTheme = (theme: Theme) => {
+    setTheme(theme);
+    localStorage.setItem('theme', theme);
+  };
 
   useEffect(() => {
     UserService.getContacts(userId).then(res => {
@@ -486,7 +490,7 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
   const handleContactSelect = async (c: Contact) => {
     setSelectedContact(c.id);
     setActiveConversation(c.id);
-    
+    setShowRightSidebar(true);
     // Load chat history from API on contact selection
     try {
       await loadConversationHistory(c.id);
@@ -543,6 +547,13 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
           </div>
           <span style={{ color: color.textPrimary, fontSize: '18px', fontWeight: 600 }}>Chats</span>
         </div>
+        {/* Theme Picker Component */}
+        <ThemePicker
+          theme={theme}
+          colors={color}
+          toggleTheme={toggleTheme}
+          isMobile={true}
+        />
       </div>
 
       {/* Search + Dot Menu */}
@@ -635,7 +646,7 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
                     {contact.time ?? ''}
                   </span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
                   <span style={{
                     color: color.textSecondary, fontSize: '14px',
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1,
@@ -661,7 +672,7 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
   );
 
   // ── Chat Area ─────────────────────────────────────────────────────────────
-  const chatAreaJSX = (onBack?: () => void) => (
+  const chatAreaJSX = (onBack: () => void) => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Chat header */}
       <div style={{
@@ -775,9 +786,11 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
             {contactListJSX}
           </div>
         )}
-        <div style={{ flex: 1, minWidth: 0, height: '100%' }}>
-          {chatAreaJSX()}
-        </div>
+        {showRightSidebar && (
+          <div style={{ flex: 1, minWidth: 0, height: '100%' }}>
+            {chatAreaJSX(() => setShowRightSidebar(false))}
+          </div>
+        )}
       </div>
     </>
   );

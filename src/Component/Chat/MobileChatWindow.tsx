@@ -465,6 +465,7 @@ const MobileChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setT
     const toggleTheme = (theme: Theme) => {
         setTheme(theme);
         localStorage.setItem('theme', theme);
+        sessionStorage.setItem('theme', theme);
     };
     const [showContacts, setShowContacts] = useState(true);
     const [search, setSearch] = useState('');

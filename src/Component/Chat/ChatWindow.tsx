@@ -473,6 +473,7 @@ const ChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: 
   const toggleTheme = (theme: Theme) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);
+    sessionStorage.setItem('theme', theme);
   };
 
   useEffect(() => {

@@ -27,6 +27,9 @@ class UserReturnServices {
         sessionStorage.removeItem("userId");
         return await axios.post(`${this.route}/logout/${id}`, {});
     }
+    createFriend = async (userId: string, friendId: string) => {
+        return await axios.post(`${this.route}/CreatePairChat/${userId}/${friendId}`, {});
+    }
 
 }
 export default new UserReturnServices();

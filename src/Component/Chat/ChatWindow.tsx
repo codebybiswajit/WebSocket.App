@@ -341,8 +341,12 @@ const AddContactModal = ({ onClose, color }: { onClose: () => void; color: Theme
     if (!selected[0]) return;
     setBusy(true);
     try {
-      WSToast.success('This feature is coming soon!');
-      onClose();
+      await UserService.createFriend(sessionStorage.getItem('userId') || localStorage.getItem('userId') || '', selected[0]).then(() => {
+        WSToast.success('Contact added successfully!');
+        onClose();
+      }).catch(() => {
+        WSToast.error('Failed to add contact. Please try again.');
+      });
     }
     catch (e) { console.error(e); } finally { setBusy(false); }
   };
@@ -454,6 +458,7 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
     setActiveConversation,
     notifyTyping,
     notifyStopTyping,
+    loadConversationHistory,
   } = useChat();
 
   const [selectedContact, setSelectedContact] = useState<string>('');
@@ -476,11 +481,18 @@ const ChatWindow = ({ color, }: { color: ThemeColors; }) => {
         setActiveConversation(mapped[0].id);
       }
     });
-  }, [userId, setActiveConversation]);
+  }, [userId, setActiveConversation, activeModal, loadConversationHistory]);
 
-  const handleContactSelect = (c: Contact) => {
+  const handleContactSelect = async (c: Contact) => {
     setSelectedContact(c.id);
     setActiveConversation(c.id);
+    
+    // Load chat history from API on contact selection
+    try {
+      await loadConversationHistory(c.id);
+    } catch (e) {
+      console.warn('Failed to load message history:', e);
+    }
   };
 
   const handleSendMessage = async (msg: string) => {

@@ -5,9 +5,9 @@ import { ConnectionStatus } from '../../Types/Chat';
 import type { IdName, Theme, ThemeColors } from '../../Types/CommonTypes';
 import { BackIcon, CheckIcon, CloseIcon, DotsIcon, GroupIcon, PhoneIcon, SearchIcon, UserIcon, UserPlusIcon, VideoIcon } from '../../Utils/svg';
 import WSToast from '../../Utils/WSToast';
-import ThemePicker from '../Utils/ThemePicker';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
+import ThemePicker from '../../Utils/ThemePicker';
 
 interface Contact {
   id: string;

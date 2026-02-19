@@ -24,11 +24,6 @@ export const HomeViewApp = ({ setLoggedIn, setTheme, theme, showLoginModal, setS
     const [loading, setLoading] = useState(false);
     const colors = ThemeConfig[theme];
 
-    useEffect(() => {
-        const savedTheme = (localStorage.getItem('theme') as Theme) || Theme.Light;
-        setTheme(savedTheme);
-    }, []);
-
     const toggleTheme = (theme: Theme) => {
         setTheme(theme);
         localStorage.setItem('theme', theme);

@@ -1,6 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { type NavbarProps } from "../../Types/CommonTypes";
-import ThemePicker from "../Utils/ThemePicker";
+import ThemePicker from "../../Utils/ThemePicker";
 
 const Navbar = ({
     theme,

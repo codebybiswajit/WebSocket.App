@@ -8,6 +8,7 @@ import { ChatProvider } from './Context/ChatContext';
 import UserService from './Services/UserService';
 import { Theme } from './Types/CommonTypes';
 import NotFound from './Utils/NotFound';
+import NotFoundThreeJS from './Utils/NotFoundMetrics';
 import ThemeConfig from './Utils/ThemeConfig';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,6 +38,15 @@ const App = () => {
     const tempSetUserid = sessionStorage.getItem('userId') ?? localStorage.getItem('userId') ?? '';
     setLoggedIn((setToken != undefined && setToken !== null) && (tempSetUserid != undefined && tempSetUserid !== null));
   }, []);
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   const toggleTheme = (theme: Theme) => {
     setTheme(theme);
     localStorage.setItem('theme', theme);
@@ -66,7 +76,14 @@ const App = () => {
                 <Route path="/chat" element={<Navigate to="/" replace />} />
               </>
             )}
-            {loggedIn && (
+            {loggedIn && isMobile && (
+              <>
+                <Route path="/" element={<Navigate to="/chat" replace />} />
+                {/* <Route path="/chat" element={<MobileChatWindow color={colors} />} /> */}
+                <Route path="/chat" element={<NotFoundThreeJS />} />
+              </>
+            )}
+            {loggedIn && !isMobile && (
               <>
                 <Route path="/" element={<Navigate to="/chat" replace />} />
                 <Route path="/chat" element={<ChatWindow color={colors} />} />

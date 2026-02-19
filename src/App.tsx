@@ -69,7 +69,7 @@ const App = () => {
             {loggedIn && (
               <>
                 <Route path="/" element={<Navigate to="/chat" replace />} />
-                <Route path="/chat" element={<ChatWindow />} />
+                <Route path="/chat" element={<ChatWindow color={colors} />} />
               </>
             )}
             <Route path="*" element={<NotFound />} />

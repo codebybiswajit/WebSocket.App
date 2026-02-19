@@ -7,7 +7,8 @@ class UserReturnServices {
     getSession = async (userId: string) => {
         return await axios.get(`${this.route}/session/${userId}`);
     }
-    getAllUserDetails = async () => { return await axios.get(`${this.route}/all`) }
+
+    getSearchResult = async (search?: string) => { return await axios.get(`${this.route}/all?search=${search ?? ''}`) }
     getUser = async (id: string) => { return await axios.get(`${this.route}/${id}`) }
     login = async (userName: string, password: string) => {
         return await axios.post(`${this.route}/login`, { userName, password });

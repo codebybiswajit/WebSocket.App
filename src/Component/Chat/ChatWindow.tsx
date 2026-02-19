@@ -342,11 +342,15 @@ const AddContactModal = ({ onClose, color }: { onClose: () => void; color: Theme
     if (!selected[0]) return;
     setBusy(true);
     try {
-      await UserService.createFriend(sessionStorage.getItem('userId') || localStorage.getItem('userId') || '', selected[0]).then(() => {
-        WSToast.success('Contact added successfully!');
+      await UserService.createFriend(sessionStorage.getItem('userId') || localStorage.getItem('userId') || '', selected[0]).then((res: any) => {
+        if (res.data.statusCode === 400) {
+          WSToast.warning(res.data.message);
+        } else {
+          WSToast.success(res.data.message || 'Contact added successfully!');
+        }
         onClose();
-      }).catch(() => {
-        WSToast.error('Failed to add contact. Please try again.');
+      }).catch((ex) => {
+        WSToast.error(ex.message || 'Failed to add contact. Please try again.');
       });
     }
     catch (e) { console.error(e); } finally { setBusy(false); }
@@ -647,7 +651,7 @@ const ChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: 
                     {contact.time ?? ''}
                   </span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', textAlign: "start" }}>
                   <span style={{
                     color: color.textSecondary, fontSize: '14px',
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1,
@@ -774,7 +778,7 @@ const ChatWindow = ({ color, setTheme, theme }: { color: ThemeColors; setTheme: 
       {activeModal === 'createGroup' && <CreateGroupModal onClose={() => setActiveModal(null)} color={color} />}
 
       <div style={{
-        display: 'flex', width: '100%', height: 'calc(100vh - 70px)',
+        display: 'flex', width: '100%', height: '100vh',
         backgroundColor: color.bgPrimary,
         overflow: 'hidden',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',

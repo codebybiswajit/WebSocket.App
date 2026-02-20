@@ -1,167 +1,194 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- Primary Meta Tags -->
-  <title>My Chat - Free Instant Messaging & Video Chat Application</title>
-  <meta name="title" content="My Chat - Free Instant Messaging & Video Chat Application" />
-  <meta name="description" content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing. Secure, fast, and easy to use chat application." />
-  <meta name="keywords" content="chat application, messaging app, video chat, instant messaging, free chat, secure messaging, voice calls, group chat, file sharing, online chat" />
-  <meta name="author" content="BM" />
-  <meta name="robots" content="index, follow" />
-  <meta name="language" content="English" />
-  <meta name="revisit-after" content="7 days" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="/chat.jpg" />
-  <link rel="apple-touch-icon" href="/chat.jpg" />
-  <link rel="shortcut icon" type="image/jpeg" href="/chat.jpg" />
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yourdomain.com/" />
-  <meta property="og:title" content="My Chat - Free Instant Messaging & Video Chat Application" />
-  <meta property="og:description" content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing. Secure, fast, and easy to use." />
-  <meta property="og:image" content="https://yourdomain.com/chat.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="My Chat by BM" />
-  <meta property="og:locale" content="en_US" />
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://yourdomain.com/" />
-  <meta name="twitter:title" content="My Chat - Free Instant Messaging & Video Chat Application" />
-  <meta name="twitter:description" content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing." />
-  <meta name="twitter:image" content="https://yourdomain.com/chat.jpg" />
-  <meta name="twitter:creator" content="@yourusername" />
-  
-  <!-- Additional Meta Tags for Search Engines -->
-  <meta name="application-name" content="My Chat" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="My Chat" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#667eea" />
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://yourdomain.com/" />
-  
-  <!-- Structured Data (JSON-LD) for Rich Snippets -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "My Chat",
-    "alternateName": "My Chat by BM",
-    "description": "Free instant messaging and video chat application for seamless communication",
-    "url": "https://yourdomain.com",
-    "applicationCategory": "CommunicationApplication",
-    "operatingSystem": "Web, Windows, MacOS, Linux, iOS, Android",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "BM"
-    },
-    "screenshot": "https://yourdomain.com/chat.jpg",
-    "featureList": [
-      "Instant messaging",
-      "Video calls",
-      "Voice calls",
-      "Group chat",
-      "File sharing",
-      "End-to-end encryption",
-      "Cross-platform support"
-    ]
-  }
-  </script>
-  
-  <!-- WebSite Schema for Search Box -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "My Chat",
-    "url": "https://yourdomain.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://yourdomain.com/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  
-  <!-- Organization Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "My Chat by BM",
-    "url": "https://yourdomain.com",
-    "logo": "https://yourdomain.com/chat.jpg",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Customer Support",
-      "email": "support@yourdomain.com"
-    },
-    "sameAs": [
-      "https://www.facebook.com/yourpage",
-      "https://twitter.com/yourhandle",
-      "https://www.linkedin.com/company/yourcompany",
-      "https://www.instagram.com/yourhandle"
-    ]
-  }
-  </script>
-  
-  <!-- Preconnect for Performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  
-  <!-- DNS Prefetch -->
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-  
-  <!-- Manifest for PWA -->
-  <link rel="manifest" href="/manifest.json" />
-  
-  <!-- Microsoft Tiles -->
-  <meta name="msapplication-TileColor" content="#667eea" />
-  <meta name="msapplication-TileImage" content="/chat.jpg" />
-  <meta name="msapplication-config" content="/browserconfig.xml" />
-  
-  <!-- Google Site Verification (Add your code) -->
-  <!-- <meta name="google-site-verification" content="your-verification-code" /> -->
-  
-  <!-- Bing Webmaster Verification (Add your code) -->
-  <!-- <meta name="msvalidate.01" content="your-verification-code" /> -->
-  
-</head>
+    <!-- Primary Meta Tags -->
+    <title>My Chat - Free Instant Messaging & Video Chat Application</title>
+    <meta
+      name="title"
+      content="My Chat - Free Instant Messaging & Video Chat Application"
+    />
+    <meta
+      name="description"
+      content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing. Secure, fast, and easy to use chat application."
+    />
+    <meta
+      name="keywords"
+      content="chat application, messaging app, video chat, instant messaging, free chat, secure messaging, voice calls, group chat, file sharing, online chat"
+    />
+    <meta name="author" content="BM" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-  
-  <!-- Fallback for users with JavaScript disabled -->
-  <noscript>
-    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
-      <h1>My Chat - Free Messaging Application</h1>
-      <p>Please enable JavaScript to use My Chat application.</p>
-      <p>My Chat provides instant messaging, video calls, and secure communication.</p>
-    </div>
-  </noscript>
-</body>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="/chat.jpg" />
+    <link rel="apple-touch-icon" href="/chat.jpg" />
+    <link rel="shortcut icon" type="image/jpeg" href="/chat.jpg" />
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta
+      property="og:title"
+      content="My Chat - Free Instant Messaging & Video Chat Application"
+    />
+    <meta
+      property="og:description"
+      content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing. Secure, fast, and easy to use."
+    />
+    <meta property="og:image" content="https://yourdomain.com/chat.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="My Chat by BM" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://yourdomain.com/" />
+    <meta
+      name="twitter:title"
+      content="My Chat - Free Instant Messaging & Video Chat Application"
+    />
+    <meta
+      name="twitter:description"
+      content="Connect instantly with friends and family through My Chat. Free messaging, video calls, voice calls, and file sharing."
+    />
+    <meta name="twitter:image" content="https://yourdomain.com/chat.jpg" />
+    <meta name="twitter:creator" content="@yourusername" />
+
+    <!-- Additional Meta Tags for Search Engines -->
+    <meta name="application-name" content="My Chat" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="My Chat" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#667eea" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourdomain.com/" />
+
+    <!-- Structured Data (JSON-LD) for Rich Snippets -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "My Chat",
+        "alternateName": "My Chat by BM",
+        "description": "Free instant messaging and video chat application for seamless communication",
+        "url": "https://yourdomain.com",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Web, Windows, MacOS, Linux, iOS, Android",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "1250"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "BM"
+        },
+        "screenshot": "https://yourdomain.com/chat.jpg",
+        "featureList": [
+          "Instant messaging",
+          "Video calls",
+          "Voice calls",
+          "Group chat",
+          "File sharing",
+          "End-to-end encryption",
+          "Cross-platform support"
+        ]
+      }
+    </script>
+
+    <!-- WebSite Schema for Search Box -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "My Chat",
+        "url": "https://yourdomain.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://yourdomain.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "My Chat by BM",
+        "url": "https://yourdomain.com",
+        "logo": "https://yourdomain.com/chat.jpg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "Customer Support",
+          "email": "support@yourdomain.com"
+        },
+        "sameAs": [
+          "https://www.facebook.com/yourpage",
+          "https://twitter.com/yourhandle",
+          "https://www.linkedin.com/company/yourcompany",
+          "https://www.instagram.com/yourhandle"
+        ]
+      }
+    </script>
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#667eea" />
+    <meta name="msapplication-TileImage" content="/chat.jpg" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+
+    <!-- Google Site Verification (Add your code) -->
+    <!-- <meta name="google-site-verification" content="your-verification-code" /> -->
+
+    <!-- Bing Webmaster Verification (Add your code) -->
+    <!-- <meta name="msvalidate.01" content="your-verification-code" /> -->
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Fallback for users with JavaScript disabled -->
+    <noscript>
+      <div
+        style="
+          text-align: center;
+          padding: 50px;
+          font-family: Arial, sans-serif;
+        "
+      >
+        <h1>My Chat - Free Messaging Application</h1>
+        <p>Please enable JavaScript to use My Chat application.</p>
+        <p>
+          My Chat provides instant messaging, video calls, and secure
+          communication.
+        </p>
+      </div>
+    </noscript>
+  </body>
 </html>
